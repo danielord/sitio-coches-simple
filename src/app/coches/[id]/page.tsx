@@ -1,6 +1,3 @@
-'use client'
-
-import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Car, ArrowLeft, Phone, Mail, Calendar, Gauge, Fuel } from 'lucide-react'
@@ -63,45 +60,12 @@ const defaultCochesData = {
 }
 
 export default function CocheDetallePage({ params }: { params: { id: string } }) {
-  const [coche, setCoche] = useState<{marca: string, modelo: string, año: number, precio: number, kilometraje: number, combustible: string, transmision?: string, descripcion: string, imagen: string, vendedor: {nombre: string, telefono: string, email: string}} | null>(null)
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    // Buscar en coches por defecto
-    let foundCoche = defaultCochesData[params.id as keyof typeof defaultCochesData]
-    
-    // Si no se encuentra, buscar en coches publicados
-    if (!foundCoche) {
-      const publishedCars = JSON.parse(localStorage.getItem('cars') || '[]')
-      foundCoche = publishedCars.find((car: {id: string}) => car.id === params.id)
-    }
-    
-    // Fallback al primer coche por defecto
-    if (!foundCoche) {
-      foundCoche = defaultCochesData['1']
-    }
-    
-    setCoche(foundCoche)
-    setLoading(false)
-  }, [params.id])
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-gray-600">Cargando...</div>
-      </div>
-    )
-  }
-
+  // Buscar en coches por defecto
+  let coche = defaultCochesData[params.id as keyof typeof defaultCochesData]
+  
+  // Fallback al primer coche por defecto si no se encuentra
   if (!coche) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Coche no encontrado</h1>
-          <Link href="/coches" className="btn-primary">Volver a Coches</Link>
-        </div>
-      </div>
-    )
+    coche = defaultCochesData['1']
   }
 
   return (
