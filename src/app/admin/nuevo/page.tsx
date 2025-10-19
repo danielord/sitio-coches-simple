@@ -4,7 +4,7 @@ import { useState } from 'react'
 
 import Link from 'next/link'
 import { Car, ArrowLeft, Save, Sparkles, Upload } from 'lucide-react'
-import { generateCarImageUrl, generateCarSlideshowImage } from '@/lib/carImages'
+import { generateCarImageUrl } from '@/lib/carImages'
 import { CarStorage, SafeStorage } from '@/lib/storage'
 import ThemeToggle from '@/components/ThemeToggle'
 
@@ -17,8 +17,7 @@ export default function NuevoCochePage() {
     kilometraje: '',
     combustible: '',
     descripcion: '',
-    imagen: '',
-    enSlideshow: false
+    imagen: ''
   })
   const [isGenerating, setIsGenerating] = useState(false)
   const [, setErrors] = useState<{[key: string]: string}>({})
@@ -99,18 +98,7 @@ export default function NuevoCochePage() {
         throw new Error('No se pudo guardar el coche')
       }
     
-      // Si está marcado para slideshow, agregarlo
-      if (formData.enSlideshow) {
-        const slideData = {
-          id: newCar.id,
-          title: `${newCar.marca} ${newCar.modelo}`,
-          subtitle: `${newCar.año} - ${newCar.combustible}`,
-          price: `$${newCar.precio.toLocaleString()} MXN`,
-          image: generateCarSlideshowImage(newCar.marca, newCar.modelo)
-        }
-        
-        CarStorage.addToSlideshow(slideData)
-      }
+
       
       // Limpiar formulario
       setFormData({
@@ -121,8 +109,7 @@ export default function NuevoCochePage() {
         kilometraje: '',
         combustible: '',
         descripcion: '',
-        imagen: '',
-        enSlideshow: false
+        imagen: ''
       })
       
       alert('¡Coche publicado exitosamente!')
@@ -353,18 +340,7 @@ export default function NuevoCochePage() {
               />
             </div>
             
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                id="enSlideshow"
-                checked={formData.enSlideshow}
-                onChange={(e) => setFormData({...formData, enSlideshow: e.target.checked})}
-                className="mr-2"
-              />
-              <label htmlFor="enSlideshow" className="text-sm font-medium text-gray-700">
-                Mostrar en slideshow principal (destacado)
-              </label>
-            </div>
+
             
             <div className="flex justify-end space-x-4">
               <Link href="/admin" className="btn-secondary">Cancelar</Link>
