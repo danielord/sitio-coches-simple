@@ -1,7 +1,25 @@
+'use client'
+
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 
 export default function RegistroPage() {
+  const [formData, setFormData] = useState({
+    nombre: '', email: '', telefono: '', password: ''
+  })
+  const router = useRouter()
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    // Guardar usuario en localStorage
+    const users = JSON.parse(localStorage.getItem('users') || '[]')
+    users.push(formData)
+    localStorage.setItem('users', JSON.stringify(users))
+    alert('Usuario registrado exitosamente')
+    router.push('/login')
+  }
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center py-12">
       <div className="max-w-md w-full space-y-8 p-8">
@@ -14,7 +32,7 @@ export default function RegistroPage() {
           <p className="mt-2 text-gray-600 dark:text-gray-400">Crea tu cuenta para vender coches</p>
         </div>
         
-        <form className="mt-8 space-y-6">
+        <form onSubmit={handleSubmit} className="mt-8 space-y-6">
           <div>
             <label htmlFor="nombre" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
               Nombre Completo
@@ -23,6 +41,8 @@ export default function RegistroPage() {
               id="nombre"
               type="text"
               required
+              value={formData.nombre}
+              onChange={(e) => setFormData({...formData, nombre: e.target.value})}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               placeholder="Tu nombre completo"
             />
@@ -36,6 +56,8 @@ export default function RegistroPage() {
               id="email"
               type="email"
               required
+              value={formData.email}
+              onChange={(e) => setFormData({...formData, email: e.target.value})}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               placeholder="tu@email.com"
             />
@@ -49,6 +71,8 @@ export default function RegistroPage() {
               id="telefono"
               type="tel"
               required
+              value={formData.telefono}
+              onChange={(e) => setFormData({...formData, telefono: e.target.value})}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               placeholder="+52 55 1234 5678"
             />
@@ -62,6 +86,8 @@ export default function RegistroPage() {
               id="password"
               type="password"
               required
+              value={formData.password}
+              onChange={(e) => setFormData({...formData, password: e.target.value})}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               placeholder="••••••••"
             />

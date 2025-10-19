@@ -49,9 +49,14 @@ export default function HeroSlideshow() {
   return (
     <div className="relative h-96 md:h-[500px] overflow-hidden rounded-lg bg-gray-200 dark:bg-gray-700">
       <div className="absolute inset-0 transition-opacity duration-500">
-        <div className="w-full h-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center">
-          <div className="text-white text-6xl font-bold opacity-20">
-            {slides[currentSlide].title.split(' ')[0]}
+        <div 
+          className={`w-full h-full flex items-center justify-center ${
+            currentSlide === 0 ? 'bg-blue-600' : 
+            currentSlide === 1 ? 'bg-gray-800' : 'bg-red-600'
+          }`}
+        >
+          <div className="text-white text-4xl font-bold">
+            🚗 {slides[currentSlide].title.split(' ')[0]}
           </div>
         </div>
         <div className="absolute inset-0 bg-black bg-opacity-40" />

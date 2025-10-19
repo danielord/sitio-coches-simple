@@ -50,7 +50,7 @@ export default function Home() {
       <section className="py-16 bg-white dark:bg-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatedSection className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">¿Por qué elegir SitioCoches?</h2>
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">¿Por qué elegir V&R Autos?</h2>
             <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
               Ofrecemos la mejor experiencia para comprar y vender coches
             </p>
