@@ -1,6 +1,8 @@
-'use client'
-
 import Link from 'next/link'
+
+export async function generateStaticParams() {
+  return [{ id: '1' }, { id: '2' }, { id: '3' }]
+}
 import { Car, ArrowLeft, Phone, Mail, Calendar, Gauge, Fuel } from 'lucide-react'
 
 const cochesData = {
