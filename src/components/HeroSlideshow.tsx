@@ -1,27 +1,26 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 const slides = [
   {
     id: 1,
-    image: 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=1200',
+    image: 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=1200&h=600&fit=crop',
     title: 'Toyota Corolla Híbrido',
     subtitle: 'Eficiencia y confiabilidad',
     price: '$370,000 MXN'
   },
   {
     id: 2,
-    image: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=1200',
+    image: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=1200&h=600&fit=crop',
     title: 'BMW Serie 3',
     subtitle: 'Lujo y deportividad',
     price: '$640,000 MXN'
   },
   {
     id: 3,
-    image: 'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=1200',
+    image: 'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=1200&h=600&fit=crop',
     title: 'Audi A4',
     subtitle: 'Tecnología premium',
     price: '$700,000 MXN'
@@ -30,6 +29,7 @@ const slides = [
 
 export default function HeroSlideshow() {
   const [currentSlide, setCurrentSlide] = useState(0)
+  const [isLoaded, setIsLoaded] = useState(false)
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -47,52 +47,33 @@ export default function HeroSlideshow() {
   }
 
   return (
-    <div className="relative h-96 md:h-[500px] overflow-hidden rounded-lg">
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={currentSlide}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.5 }}
-          className="absolute inset-0"
-        >
-          <img
-            src={slides[currentSlide].image}
-            alt={slides[currentSlide].title}
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-black bg-opacity-40" />
-          <div className="absolute inset-0 flex items-center justify-center text-white text-center">
-            <div>
-              <motion.h2
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.2 }}
-                className="text-3xl md:text-5xl font-bold mb-2"
-              >
-                {slides[currentSlide].title}
-              </motion.h2>
-              <motion.p
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.4 }}
-                className="text-lg md:text-xl mb-4"
-              >
-                {slides[currentSlide].subtitle}
-              </motion.p>
-              <motion.p
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.6 }}
-                className="text-2xl md:text-3xl font-bold"
-              >
-                {slides[currentSlide].price}
-              </motion.p>
-            </div>
+    <div className="relative h-96 md:h-[500px] overflow-hidden rounded-lg bg-gray-200 dark:bg-gray-700">
+      <div className="absolute inset-0 transition-opacity duration-500">
+        <img
+          src={slides[currentSlide].image}
+          alt={slides[currentSlide].title}
+          className="w-full h-full object-cover"
+          onLoad={() => setIsLoaded(true)}
+          onError={(e) => {
+            console.log('Image failed to load:', slides[currentSlide].image)
+            e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI2MDAiIHZpZXdCb3g9IjAgMCAxMjAwIDYwMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjEyMDAiIGhlaWdodD0iNjAwIiBmaWxsPSIjNEY0NjRGIi8+Cjx0ZXh0IHg9IjYwMCIgeT0iMzAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSIyNCI+Q29jaGU8L3RleHQ+Cjwvc3ZnPgo='
+          }}
+        />
+        <div className="absolute inset-0 bg-black bg-opacity-40" />
+        <div className="absolute inset-0 flex items-center justify-center text-white text-center">
+          <div>
+            <h2 className="text-3xl md:text-5xl font-bold mb-2">
+              {slides[currentSlide].title}
+            </h2>
+            <p className="text-lg md:text-xl mb-4">
+              {slides[currentSlide].subtitle}
+            </p>
+            <p className="text-2xl md:text-3xl font-bold">
+              {slides[currentSlide].price}
+            </p>
           </div>
-        </motion.div>
-      </AnimatePresence>
+        </div>
+      </div>
 
       {/* Navigation buttons */}
       <button
