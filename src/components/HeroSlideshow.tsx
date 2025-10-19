@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import Image from 'next/image'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 const defaultSlides = [
@@ -10,21 +9,21 @@ const defaultSlides = [
     title: 'Toyota Corolla Híbrido',
     subtitle: 'Eficiencia y confiabilidad',
     price: '$370,000 MXN',
-    image: 'https://picsum.photos/1200/600?random=1'
+    image: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=1200&h=600&fit=crop'
   },
   {
     id: 2,
     title: 'BMW Serie 3',
     subtitle: 'Lujo y deportividad',
     price: '$640,000 MXN',
-    image: 'https://picsum.photos/1200/600?random=2'
+    image: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=1200&h=600&fit=crop'
   },
   {
     id: 3,
     title: 'Audi A4',
     subtitle: 'Tecnología premium',
     price: '$700,000 MXN',
-    image: 'https://picsum.photos/1200/600?random=3'
+    image: 'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=1200&h=600&fit=crop'
   }
 ]
 
@@ -61,25 +60,26 @@ export default function HeroSlideshow() {
   }
 
   return (
-    <div className="relative h-96 md:h-[500px] overflow-hidden rounded-lg bg-gray-200 dark:bg-gray-700">
-      <div className="absolute inset-0 transition-opacity duration-500">
-        <Image
+    <div className="relative h-96 md:h-[500px] overflow-hidden rounded-lg bg-gradient-to-r from-blue-600 to-purple-600">
+      <div className="absolute inset-0 transition-all duration-500 ease-in-out">
+        <img
           src={slides[currentSlide].image}
           alt={slides[currentSlide].title}
-          width={1200}
-          height={600}
           className="w-full h-full object-cover"
+          onError={(e) => {
+            e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI2MDAiIHZpZXdCb3g9IjAgMCAxMjAwIDYwMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjEyMDAiIGhlaWdodD0iNjAwIiBmaWxsPSIjNEY0NkU1Ii8+CjxwYXRoIGQ9Ik01ODAgMjgwSDYyMFYzMjBINTgwVjI4MFoiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik01NjAgMjYwSDY0MFYzNDBINTYwVjI2MFoiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMiIgZmlsbD0ibm9uZSIvPgo8L3N2Zz4K'
+          }}
         />
         <div className="absolute inset-0 bg-black bg-opacity-40" />
         <div className="absolute inset-0 flex items-center justify-center text-white text-center">
-          <div>
-            <h2 className="text-3xl md:text-5xl font-bold mb-2">
+          <div className="max-w-4xl px-4">
+            <h2 className="text-3xl md:text-5xl font-bold mb-2 drop-shadow-lg">
               {slides[currentSlide].title}
             </h2>
-            <p className="text-lg md:text-xl mb-4">
+            <p className="text-lg md:text-xl mb-4 drop-shadow-md">
               {slides[currentSlide].subtitle}
             </p>
-            <p className="text-2xl md:text-3xl font-bold">
+            <p className="text-2xl md:text-3xl font-bold text-yellow-400 drop-shadow-lg">
               {slides[currentSlide].price}
             </p>
           </div>

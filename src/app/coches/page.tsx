@@ -15,7 +15,7 @@ const defaultCoches = [
     precio: 370000,
     kilometraje: 45000,
     combustible: 'Híbrido',
-    imagen: 'https://picsum.photos/400/200?random=10'
+    imagen: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&h=200&fit=crop'
   },
   {
     id: '2',
@@ -25,7 +25,7 @@ const defaultCoches = [
     precio: 640000,
     kilometraje: 38000,
     combustible: 'Gasolina',
-    imagen: 'https://picsum.photos/400/200?random=11'
+    imagen: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=400&h=200&fit=crop'
   },
   {
     id: '3',
@@ -35,7 +35,7 @@ const defaultCoches = [
     precio: 700000,
     kilometraje: 25000,
     combustible: 'Diésel',
-    imagen: 'https://picsum.photos/400/200?random=12'
+    imagen: 'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=400&h=200&fit=crop'
   }
 ]
 
@@ -52,15 +52,29 @@ export default function CochesPage() {
       const allCars = [...defaultCoches, ...publishedCars]
       setCoches(allCars)
       
-      const savedFavoritos = JSON.parse(localStorage.getItem('favoritos') || '[]')
-      setFavoritos(savedFavoritos.map((f: {id: string}) => f.id))
+      // Solo cargar favoritos si hay un usuario logueado
+      const userAuth = localStorage.getItem('userAuth')
+      if (userAuth) {
+        const savedFavoritos = JSON.parse(localStorage.getItem('favoritos') || '[]')
+        setFavoritos(savedFavoritos.map((f: {id: string}) => f.id))
+      } else {
+        setFavoritos([])
+      }
     } catch (error) {
       console.error('Error loading data:', error)
       setCoches(defaultCoches)
+      setFavoritos([])
     }
   }, [])
 
   const toggleFavorito = (coche: {id: string; marca: string; modelo: string; año: number; precio: number; kilometraje: number; combustible: string; imagen: string}) => {
+    // Verificar si el usuario está logueado
+    const userAuth = localStorage.getItem('userAuth')
+    if (!userAuth) {
+      alert('Debes iniciar sesión para agregar favoritos')
+      return
+    }
+    
     const savedFavoritos = JSON.parse(localStorage.getItem('favoritos') || '[]')
     const isFavorite = savedFavoritos.find((f: {id: string}) => f.id === coche.id)
     
@@ -86,13 +100,13 @@ export default function CochesPage() {
   const marcas = [...new Set(coches.map(c => c.marca))]
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <header className="bg-white dark:bg-gray-800 shadow-sm">
+    <div className="min-h-screen bg-gray-50">
+      <header className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <Link href="/" className="flex items-center">
               <Image src="/logo.jpg" alt="V&R Autos" width={40} height={40} className="rounded-lg" />
-              <span className="ml-3 text-xl font-bold text-gray-900 dark:text-white">V&R Autos</span>
+              <span className="ml-3 text-xl font-bold text-gray-900">V&R Autos</span>
             </Link>
             <div className="flex items-center space-x-4">
               <Link href="/vender" className="text-gray-700 hover:text-blue-600 font-medium">Vender</Link>

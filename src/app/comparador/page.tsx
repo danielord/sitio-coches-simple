@@ -11,9 +11,9 @@ export default function ComparadorPage() {
 
   useEffect(() => {
     const defaultCoches = [
-      { id: '1', marca: 'Toyota', modelo: 'Corolla', año: 2020, precio: 370000, kilometraje: 45000, combustible: 'Híbrido', imagen: 'https://picsum.photos/400/200?random=10' },
-      { id: '2', marca: 'BMW', modelo: 'Serie 3', año: 2019, precio: 640000, kilometraje: 38000, combustible: 'Gasolina', imagen: 'https://picsum.photos/400/200?random=11' },
-      { id: '3', marca: 'Audi', modelo: 'A4', año: 2021, precio: 700000, kilometraje: 25000, combustible: 'Diésel', imagen: 'https://picsum.photos/400/200?random=12' }
+      { id: '1', marca: 'Toyota', modelo: 'Corolla', año: 2020, precio: 370000, kilometraje: 45000, combustible: 'Híbrido', imagen: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&h=200&fit=crop' },
+      { id: '2', marca: 'BMW', modelo: 'Serie 3', año: 2019, precio: 640000, kilometraje: 38000, combustible: 'Gasolina', imagen: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=400&h=200&fit=crop' },
+      { id: '3', marca: 'Audi', modelo: 'A4', año: 2021, precio: 700000, kilometraje: 25000, combustible: 'Diésel', imagen: 'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=400&h=200&fit=crop' }
     ]
     const publishedCars = JSON.parse(localStorage.getItem('cars') || '[]')
     setCoches([...defaultCoches, ...publishedCars])

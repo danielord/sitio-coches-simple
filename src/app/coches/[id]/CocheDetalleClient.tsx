@@ -15,7 +15,7 @@ const defaultCochesData = {
     combustible: 'Híbrido',
     transmision: 'Automática',
     descripcion: 'Excelente Toyota Corolla híbrido en perfectas condiciones.',
-    imagen: 'https://picsum.photos/600/400?random=10',
+    imagen: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=600&h=400&fit=crop',
     vendedor: {
       nombre: 'Carlos García',
       telefono: '+52 55 1234 5678',
@@ -31,7 +31,7 @@ const defaultCochesData = {
     combustible: 'Gasolina',
     transmision: 'Automática',
     descripcion: 'BMW Serie 3 en excelente estado con equipamiento completo.',
-    imagen: 'https://picsum.photos/600/400?random=11',
+    imagen: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=600&h=400&fit=crop',
     vendedor: {
       nombre: 'Ana López',
       telefono: '+52 55 9876 5432',
@@ -47,7 +47,7 @@ const defaultCochesData = {
     combustible: 'Diésel',
     transmision: 'Automática',
     descripcion: 'Audi A4 prácticamente nuevo con garantía oficial.',
-    imagen: 'https://picsum.photos/600/400?random=12',
+    imagen: 'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=600&h=400&fit=crop',
     vendedor: {
       nombre: 'Miguel Ruiz',
       telefono: '+52 55 5555 1234',

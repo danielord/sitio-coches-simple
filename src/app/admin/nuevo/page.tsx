@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Car, ArrowLeft, Save, Sparkles, Upload } from 'lucide-react'
+import { generateCarImageUrl, generateCarSlideshowImage } from '@/lib/carImages'
 
 export default function NuevoCochePage() {
   const [formData, setFormData] = useState({
@@ -25,24 +26,52 @@ export default function NuevoCochePage() {
     const newErrors: {[key: string]: string} = {}
     const currentYear = new Date().getFullYear()
     
-    if (parseInt(formData.año) < 1900 || parseInt(formData.año) > currentYear + 1) {
+    // Validar campos requeridos
+    if (!formData.marca.trim()) {
+      newErrors.marca = 'Marca es requerida'
+    }
+    if (!formData.modelo.trim()) {
+      newErrors.modelo = 'Modelo es requerido'
+    }
+    if (!formData.año) {
+      newErrors.año = 'Año es requerido'
+    } else if (parseInt(formData.año) < 1900 || parseInt(formData.año) > currentYear + 1) {
       newErrors.año = 'Año debe estar entre 1900 y ' + (currentYear + 1)
     }
-    if (parseInt(formData.precio) < 1000) {
+    if (!formData.precio) {
+      newErrors.precio = 'Precio es requerido'
+    } else if (parseInt(formData.precio) < 1000) {
       newErrors.precio = 'Precio debe ser mayor a $1,000 MXN'
     }
-    if (parseInt(formData.kilometraje) < 0) {
+    if (!formData.kilometraje) {
+      newErrors.kilometraje = 'Kilometraje es requerido'
+    } else if (parseInt(formData.kilometraje) < 0) {
       newErrors.kilometraje = 'Kilometraje no puede ser negativo'
+    }
+    if (!formData.combustible) {
+      newErrors.combustible = 'Combustible es requerido'
+    }
+    if (!formData.descripcion.trim()) {
+      newErrors.descripcion = 'Descripción es requerida'
     }
     
     setErrors(newErrors)
+    
+    // Mostrar errores al usuario
+    if (Object.keys(newErrors).length > 0) {
+      const errorMessages = Object.values(newErrors).join('\n')
+      alert('Por favor corrige los siguientes errores:\n\n' + errorMessages)
+    }
+    
     return Object.keys(newErrors).length === 0
   }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+    console.log('Form submitted', formData)
     
     if (!validateForm()) {
+      console.log('Validation failed')
       return
     }
     
@@ -50,38 +79,41 @@ export default function NuevoCochePage() {
       // Obtener coches existentes
       const existingCars = JSON.parse(localStorage.getItem('cars') || '[]')
     
-    // Crear nuevo coche
-    const newCar = {
-      id: Date.now().toString(),
-      ...formData,
-      año: parseInt(formData.año),
-      precio: parseInt(formData.precio),
-      kilometraje: parseInt(formData.kilometraje),
-      imagen: formData.imagen || 'https://picsum.photos/400/200?random=' + Date.now(),
-      vendedor: {
-        nombre: JSON.parse(localStorage.getItem('userAuth') || '{}').nombre || 'Vendedor',
-        telefono: '+52 55 1234 5678',
-        email: JSON.parse(localStorage.getItem('userAuth') || '{}').email || 'vendedor@vrautos.com'
+      // Crear nuevo coche
+      const newCar = {
+        id: Date.now().toString(),
+        ...formData,
+        año: parseInt(formData.año),
+        precio: parseInt(formData.precio),
+        kilometraje: parseInt(formData.kilometraje),
+        imagen: formData.imagen || generateCarImageUrl(formData.marca, formData.modelo, parseInt(formData.año)),
+        vendedor: {
+          nombre: JSON.parse(localStorage.getItem('userAuth') || '{}').nombre || 'Vendedor',
+          telefono: '+52 55 1234 5678',
+          email: JSON.parse(localStorage.getItem('userAuth') || '{}').email || 'vendedor@vrautos.com'
+        }
       }
-    }
+      
+      console.log('New car created:', newCar)
     
-    // Si está marcado para slideshow, agregarlo
-    if (formData.enSlideshow) {
-      const slideshowCars = JSON.parse(localStorage.getItem('slideshowCars') || '[]')
-      slideshowCars.push({
-        id: newCar.id,
-        title: `${newCar.marca} ${newCar.modelo}`,
-        subtitle: `${newCar.año} - ${newCar.combustible}`,
-        price: `$${newCar.precio.toLocaleString()} MXN`,
-        image: newCar.imagen
-      })
-      localStorage.setItem('slideshowCars', JSON.stringify(slideshowCars))
-    }
+      // Si está marcado para slideshow, agregarlo
+      if (formData.enSlideshow) {
+        const slideshowCars = JSON.parse(localStorage.getItem('slideshowCars') || '[]')
+        slideshowCars.push({
+          id: newCar.id,
+          title: `${newCar.marca} ${newCar.modelo}`,
+          subtitle: `${newCar.año} - ${newCar.combustible}`,
+          price: `$${newCar.precio.toLocaleString()} MXN`,
+          image: generateCarSlideshowImage(newCar.marca, newCar.modelo)
+        })
+        localStorage.setItem('slideshowCars', JSON.stringify(slideshowCars))
+      }
     
       // Guardar en localStorage
       existingCars.push(newCar)
       localStorage.setItem('cars', JSON.stringify(existingCars))
       
+      console.log('Car saved successfully')
       alert('Coche publicado exitosamente!')
       router.push('/dashboard')
     } catch (error) {
@@ -133,15 +165,15 @@ export default function NuevoCochePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <header className="bg-white dark:bg-gray-800 shadow-sm">
+    <div className="min-h-screen bg-gray-50">
+      <header className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <Link href="/" className="flex items-center">
               <Car className="h-8 w-8 text-blue-600" />
-              <span className="ml-2 text-xl font-bold text-gray-900 dark:text-white">V&R Autos - Nuevo</span>
+              <span className="ml-2 text-xl font-bold text-gray-900">V&R Autos - Nuevo</span>
             </Link>
-            <Link href="/admin" className="flex items-center text-gray-600 dark:text-gray-300 hover:text-blue-600">
+            <Link href="/admin" className="flex items-center text-gray-600 hover:text-blue-600">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Volver al Admin
             </Link>
@@ -150,78 +182,78 @@ export default function NuevoCochePage() {
       </header>
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Añadir Nuevo Coche</h1>
+        <div className="bg-white rounded-lg shadow-md p-6">
+          <h1 className="text-2xl font-bold text-gray-900 mb-6">Añadir Nuevo Coche</h1>
           
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Marca</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Marca</label>
                 <input
                   type="text"
                   name="marca"
                   value={formData.marca}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
                   required
                 />
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Modelo</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Modelo</label>
                 <input
                   type="text"
                   name="modelo"
                   value={formData.modelo}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
                   required
                 />
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Año</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Año</label>
                 <input
                   type="number"
                   name="año"
                   value={formData.año}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
                   required
                 />
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Precio (MXN)</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Precio (MXN)</label>
                 <input
                   type="number"
                   name="precio"
                   value={formData.precio}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
                   required
                 />
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Kilometraje</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Kilometraje</label>
                 <input
                   type="number"
                   name="kilometraje"
                   value={formData.kilometraje}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
                   required
                 />
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Combustible</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Combustible</label>
                 <select
                   name="combustible"
                   value={formData.combustible}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
                   required
                 >
                   <option value="">Seleccionar</option>
@@ -234,7 +266,7 @@ export default function NuevoCochePage() {
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Imagen URL</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Imagen URL</label>
               <div className="flex space-x-2">
                 <input
                   type="url"
@@ -242,7 +274,7 @@ export default function NuevoCochePage() {
                   value={formData.imagen}
                   onChange={handleChange}
                   placeholder="https://ejemplo.com/imagen.jpg"
-                  className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                  className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
                 />
                 <input
                   type="file"
@@ -281,7 +313,7 @@ export default function NuevoCochePage() {
             
             <div>
               <div className="flex justify-between items-center mb-2">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Descripción</label>
+                <label className="block text-sm font-medium text-gray-700">Descripción</label>
                 <button
                   type="button"
                   onClick={generateDescription}
@@ -297,7 +329,7 @@ export default function NuevoCochePage() {
                 value={formData.descripcion}
                 onChange={handleChange}
                 rows={4}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
                 required
               />
             </div>
