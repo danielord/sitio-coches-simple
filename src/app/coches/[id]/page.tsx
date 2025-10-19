@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { Car, ArrowLeft, Phone, Mail, Calendar, Gauge, Fuel } from 'lucide-react'
 
 const cochesData = {
-  1: {
+  '1': {
     marca: 'Toyota',
     modelo: 'Corolla',
     año: 2020,
