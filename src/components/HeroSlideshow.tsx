@@ -3,32 +3,40 @@
 import { useState, useEffect } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
-const slides = [
+const defaultSlides = [
   {
     id: 1,
     title: 'Toyota Corolla Híbrido',
     subtitle: 'Eficiencia y confiabilidad',
     price: '$370,000 MXN',
-    color: 'bg-blue-600'
+    image: 'https://picsum.photos/1200/600?random=1'
   },
   {
     id: 2,
     title: 'BMW Serie 3',
     subtitle: 'Lujo y deportividad',
     price: '$640,000 MXN',
-    color: 'bg-gray-800'
+    image: 'https://picsum.photos/1200/600?random=2'
   },
   {
     id: 3,
     title: 'Audi A4',
     subtitle: 'Tecnología premium',
     price: '$700,000 MXN',
-    color: 'bg-red-600'
+    image: 'https://picsum.photos/1200/600?random=3'
   }
 ]
 
 export default function HeroSlideshow() {
   const [currentSlide, setCurrentSlide] = useState(0)
+  const [slides, setSlides] = useState(defaultSlides)
+
+  useEffect(() => {
+    // Cargar coches del slideshow desde localStorage
+    const slideshowCars = JSON.parse(localStorage.getItem('slideshowCars') || '[]')
+    const allSlides = [...defaultSlides, ...slideshowCars]
+    setSlides(allSlides)
+  }, [])
 
 
   useEffect(() => {
@@ -49,11 +57,11 @@ export default function HeroSlideshow() {
   return (
     <div className="relative h-96 md:h-[500px] overflow-hidden rounded-lg bg-gray-200 dark:bg-gray-700">
       <div className="absolute inset-0 transition-opacity duration-500">
-        <div className={`w-full h-full flex items-center justify-center ${slides[currentSlide].color}`}>
-          <div className="text-white text-4xl font-bold">
-            🚗 {slides[currentSlide].title.split(' ')[0]}
-          </div>
-        </div>
+        <img
+          src={slides[currentSlide].image}
+          alt={slides[currentSlide].title}
+          className="w-full h-full object-cover"
+        />
         <div className="absolute inset-0 bg-black bg-opacity-40" />
         <div className="absolute inset-0 flex items-center justify-center text-white text-center">
           <div>

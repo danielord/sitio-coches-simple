@@ -43,11 +43,10 @@ export default function AdminPage() {
               >
                 Cerrar Sesión
               </button>
-              <Link href="/" className="flex items-center text-gray-600 dark:text-gray-300 hover:text-blue-600">
+              <Link href="/" className="flex items-center text-gray-600 hover:text-blue-600">
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Inicio
               </Link>
-              <ThemeToggle />
             </div>
           </div>
         </div>

@@ -72,13 +72,12 @@ export default function CochesPage() {
               <span className="ml-3 text-xl font-bold text-gray-900 dark:text-white">V&R Autos</span>
             </Link>
             <div className="flex items-center space-x-4">
-              <Link href="/vender" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 font-medium">Vender</Link>
-              <Link href="/login" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 font-medium">Iniciar Sesión</Link>
-              <Link href="/" className="flex items-center text-gray-600 dark:text-gray-300 hover:text-blue-600">
+              <Link href="/vender" className="text-gray-700 hover:text-blue-600 font-medium">Vender</Link>
+              <Link href="/login" className="text-gray-700 hover:text-blue-600 font-medium">Iniciar Sesión</Link>
+              <Link href="/" className="flex items-center text-gray-600 hover:text-blue-600">
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Inicio
               </Link>
-              <ThemeToggle />
             </div>
           </div>
         </div>

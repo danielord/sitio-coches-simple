@@ -14,7 +14,8 @@ export default function NuevoCochePage() {
     kilometraje: '',
     combustible: '',
     descripcion: '',
-    imagen: ''
+    imagen: '',
+    enSlideshow: false
   })
   const [isGenerating, setIsGenerating] = useState(false)
   const router = useRouter()
@@ -33,7 +34,24 @@ export default function NuevoCochePage() {
       precio: parseInt(formData.precio),
       kilometraje: parseInt(formData.kilometraje),
       imagen: formData.imagen || 'https://via.placeholder.com/400x200?text=Coche',
-      vendedor: JSON.parse(localStorage.getItem('userAuth') || '{}').nombre || 'Vendedor'
+      vendedor: {
+        nombre: JSON.parse(localStorage.getItem('userAuth') || '{}').nombre || 'Vendedor',
+        telefono: '+52 55 1234 5678',
+        email: JSON.parse(localStorage.getItem('userAuth') || '{}').email || 'vendedor@vrautos.com'
+      }
+    }
+    
+    // Si está marcado para slideshow, agregarlo
+    if (formData.enSlideshow) {
+      const slideshowCars = JSON.parse(localStorage.getItem('slideshowCars') || '[]')
+      slideshowCars.push({
+        id: newCar.id,
+        title: `${newCar.marca} ${newCar.modelo}`,
+        subtitle: `${newCar.año} - ${newCar.combustible}`,
+        price: `$${newCar.precio.toLocaleString()} MXN`,
+        image: newCar.imagen
+      })
+      localStorage.setItem('slideshowCars', JSON.stringify(slideshowCars))
     }
     
     // Guardar en localStorage
@@ -185,14 +203,29 @@ export default function NuevoCochePage() {
                   placeholder="https://ejemplo.com/imagen.jpg"
                   className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                 />
-                <button
-                  type="button"
-                  className="btn-secondary flex items-center"
-                  onClick={() => alert('Función de subida de imagen próximamente')}
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0]
+                    if (file) {
+                      const reader = new FileReader()
+                      reader.onload = (event) => {
+                        setFormData({...formData, imagen: event.target?.result as string})
+                      }
+                      reader.readAsDataURL(file)
+                    }
+                  }}
+                  className="hidden"
+                  id="imageUpload"
+                />
+                <label
+                  htmlFor="imageUpload"
+                  className="btn-secondary flex items-center cursor-pointer"
                 >
                   <Upload className="h-4 w-4 mr-2" />
                   Subir
-                </button>
+                </label>
               </div>
             </div>
             
@@ -214,9 +247,22 @@ export default function NuevoCochePage() {
                 value={formData.descripcion}
                 onChange={handleChange}
                 rows={4}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
               />
+            </div>
+            
+            <div className="flex items-center">
+              <input
+                type="checkbox"
+                id="enSlideshow"
+                checked={formData.enSlideshow}
+                onChange={(e) => setFormData({...formData, enSlideshow: e.target.checked})}
+                className="mr-2"
+              />
+              <label htmlFor="enSlideshow" className="text-sm font-medium text-gray-700">
+                Mostrar en slideshow principal (destacado)
+              </label>
             </div>
             
             <div className="flex justify-end space-x-4">

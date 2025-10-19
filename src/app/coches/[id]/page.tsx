@@ -3,10 +3,11 @@ import Image from 'next/image'
 import { Car, ArrowLeft, Phone, Mail, Calendar, Gauge, Fuel } from 'lucide-react'
 
 export async function generateStaticParams() {
+  // Solo generar para coches por defecto, los dinámicos se manejan en runtime
   return [{ id: '1' }, { id: '2' }, { id: '3' }]
 }
 
-const cochesData = {
+const defaultCochesData = {
   '1': {
     marca: 'Toyota',
     modelo: 'Corolla',
@@ -16,7 +17,7 @@ const cochesData = {
     combustible: 'Híbrido',
     transmision: 'Automática',
     descripcion: 'Excelente Toyota Corolla híbrido en perfectas condiciones.',
-    imagen: 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=600',
+    imagen: 'https://via.placeholder.com/600x400?text=Toyota+Corolla',
     vendedor: {
       nombre: 'Carlos García',
       telefono: '+52 55 1234 5678',
@@ -32,7 +33,7 @@ const cochesData = {
     combustible: 'Gasolina',
     transmision: 'Automática',
     descripcion: 'BMW Serie 3 en excelente estado con equipamiento completo.',
-    imagen: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=600',
+    imagen: 'https://via.placeholder.com/600x400?text=BMW+Serie+3',
     vendedor: {
       nombre: 'Ana López',
       telefono: '+52 55 9876 5432',
@@ -48,7 +49,7 @@ const cochesData = {
     combustible: 'Diésel',
     transmision: 'Automática',
     descripcion: 'Audi A4 prácticamente nuevo con garantía oficial.',
-    imagen: 'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=600',
+    imagen: 'https://via.placeholder.com/600x400?text=Audi+A4',
     vendedor: {
       nombre: 'Miguel Ruiz',
       telefono: '+52 55 5555 1234',
@@ -58,7 +59,19 @@ const cochesData = {
 }
 
 export default function CocheDetallePage({ params }: { params: { id: string } }) {
-  const coche = cochesData[params.id as keyof typeof cochesData] || cochesData['1']
+  // Buscar en coches por defecto
+  let coche = defaultCochesData[params.id as keyof typeof defaultCochesData]
+  
+  // Si no se encuentra, buscar en coches publicados
+  if (!coche && typeof window !== 'undefined') {
+    const publishedCars = JSON.parse(localStorage.getItem('cars') || '[]')
+    coche = publishedCars.find((car: any) => car.id === params.id)
+  }
+  
+  // Fallback al primer coche por defecto
+  if (!coche) {
+    coche = defaultCochesData['1']
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
