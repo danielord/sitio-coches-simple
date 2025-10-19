@@ -241,7 +241,7 @@ export default function CochesPage() {
                   ${coche.precio.toLocaleString()} MXN
                 </p>
                 <div className="flex space-x-2">
-                  <Link href={`/coches/${coche.id}`} className="btn-primary flex-1 text-center">
+                  <Link href={`/coche?id=${coche.id}`} className="btn-primary flex-1 text-center">
                     Ver Detalles
                   </Link>
                   <button 

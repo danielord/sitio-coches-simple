@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+
 import Link from 'next/link'
 import { Car, ArrowLeft, Save, Sparkles, Upload } from 'lucide-react'
 import { generateCarImageUrl, generateCarSlideshowImage } from '@/lib/carImages'
@@ -21,7 +21,6 @@ export default function NuevoCochePage() {
   })
   const [isGenerating, setIsGenerating] = useState(false)
   const [, setErrors] = useState<{[key: string]: string}>({})
-  const router = useRouter()
 
   const validateForm = () => {
     const newErrors: {[key: string]: string} = {}
@@ -116,7 +115,8 @@ export default function NuevoCochePage() {
       
       console.log('Car saved successfully')
       alert('Coche publicado exitosamente!')
-      router.push('/dashboard')
+      // Redirigir a la página del coche recién creado
+      window.location.href = `/coche?id=${newCar.id}`
     } catch (error) {
       console.error('Error al guardar el coche:', error)
       alert('Error al publicar el coche. Inténtalo de nuevo.')
