@@ -5,6 +5,10 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Car, ArrowLeft, Phone, Mail, Calendar, Gauge, Fuel } from 'lucide-react'
 
+export async function generateStaticParams() {
+  return [{ id: '1' }, { id: '2' }, { id: '3' }]
+}
+
 
 
 const defaultCochesData = {
