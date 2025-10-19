@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { Car, ArrowLeft } from 'lucide-react'
 import ThemeToggle from '@/components/ThemeToggle'
 
@@ -42,13 +43,15 @@ export default function CochesPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <Link href="/" className="flex items-center">
-              <Car className="h-8 w-8 text-blue-600" />
-              <span className="ml-2 text-xl font-bold text-gray-900 dark:text-white">V&R Autos</span>
+              <Image src="/logo.jpg" alt="V&R Autos" width={40} height={40} className="rounded-lg" />
+              <span className="ml-3 text-xl font-bold text-gray-900 dark:text-white">V&R Autos</span>
             </Link>
             <div className="flex items-center space-x-4">
+              <Link href="/vender" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 font-medium">Vender</Link>
+              <Link href="/login" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 font-medium">Iniciar Sesión</Link>
               <Link href="/" className="flex items-center text-gray-600 dark:text-gray-300 hover:text-blue-600">
                 <ArrowLeft className="h-4 w-4 mr-2" />
-                Volver al Inicio
+                Inicio
               </Link>
               <ThemeToggle />
             </div>

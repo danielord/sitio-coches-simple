@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { Car, Search, Star, Users } from 'lucide-react'
 import HeroSlideshow from '@/components/HeroSlideshow'
 import ThemeToggle from '@/components/ThemeToggle'
@@ -12,13 +13,14 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div className="flex items-center">
-              <Car className="h-8 w-8 text-blue-600" />
-              <span className="ml-2 text-xl font-bold text-gray-900 dark:text-white">V&R Autos</span>
+              <Image src="/logo.jpg" alt="V&R Autos" width={40} height={40} className="rounded-lg" />
+              <span className="ml-3 text-xl font-bold text-gray-900 dark:text-white">V&R Autos</span>
             </div>
             <nav className="flex items-center space-x-4">
-              <Link href="/coches" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">Coches</Link>
-              <Link href="/admin" className="btn-primary">Admin</Link>
+              <Link href="/vender" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 font-medium">Vender</Link>
+              <Link href="/login" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 font-medium">Iniciar Sesión</Link>
               <ThemeToggle />
+              <Link href="/coches" className="btn-primary">Ver Coches</Link>
             </nav>
           </div>
         </div>
