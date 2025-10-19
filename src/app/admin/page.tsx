@@ -9,7 +9,7 @@ export default function AdminPage() {
           <div className="flex justify-between items-center py-6">
             <Link href="/" className="flex items-center">
               <Car className="h-8 w-8 text-blue-600" />
-              <span className="ml-2 text-xl font-bold text-gray-900">Panel Admin</span>
+              <span className="ml-2 text-xl font-bold text-gray-900">V&R Autos - Admin</span>
             </Link>
             <Link href="/" className="flex items-center text-gray-600 hover:text-blue-600">
               <ArrowLeft className="h-4 w-4 mr-2" />
@@ -72,7 +72,7 @@ export default function AdminPage() {
               <div className="text-gray-600">Coches Activos</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-green-600">€85,500</div>
+              <div className="text-3xl font-bold text-green-600">$1,710,000 MXN</div>
               <div className="text-gray-600">Valor Total</div>
             </div>
             <div className="text-center">

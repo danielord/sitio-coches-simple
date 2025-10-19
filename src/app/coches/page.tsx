@@ -7,7 +7,7 @@ const coches = [
     marca: 'Toyota',
     modelo: 'Corolla',
     año: 2020,
-    precio: 18500,
+    precio: 370000,
     kilometraje: 45000,
     combustible: 'Híbrido',
     imagen: 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=400'
@@ -17,7 +17,7 @@ const coches = [
     marca: 'BMW',
     modelo: 'Serie 3',
     año: 2019,
-    precio: 32000,
+    precio: 640000,
     kilometraje: 38000,
     combustible: 'Gasolina',
     imagen: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=400'
@@ -27,7 +27,7 @@ const coches = [
     marca: 'Audi',
     modelo: 'A4',
     año: 2021,
-    precio: 35000,
+    precio: 700000,
     kilometraje: 25000,
     combustible: 'Diésel',
     imagen: 'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=400'
@@ -42,7 +42,7 @@ export default function CochesPage() {
           <div className="flex justify-between items-center py-6">
             <Link href="/" className="flex items-center">
               <Car className="h-8 w-8 text-blue-600" />
-              <span className="ml-2 text-xl font-bold text-gray-900">SitioCoches</span>
+              <span className="ml-2 text-xl font-bold text-gray-900">V&R Autos</span>
             </Link>
             <Link href="/" className="flex items-center text-gray-600 hover:text-blue-600">
               <ArrowLeft className="h-4 w-4 mr-2" />
@@ -74,7 +74,7 @@ export default function CochesPage() {
                   {coche.kilometraje.toLocaleString()} km • {coche.combustible}
                 </p>
                 <p className="text-2xl font-bold text-blue-600 mb-4">
-                  €{coche.precio.toLocaleString()}
+                  ${coche.precio.toLocaleString()} MXN
                 </p>
                 <Link 
                   href={`/coches/${coche.id}`}

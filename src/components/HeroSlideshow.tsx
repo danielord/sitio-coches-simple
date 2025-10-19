@@ -10,21 +10,21 @@ const slides = [
     image: 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=1200',
     title: 'Toyota Corolla Híbrido',
     subtitle: 'Eficiencia y confiabilidad',
-    price: '€18,500'
+    price: '$370,000 MXN'
   },
   {
     id: 2,
     image: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=1200',
     title: 'BMW Serie 3',
     subtitle: 'Lujo y deportividad',
-    price: '€32,000'
+    price: '$640,000 MXN'
   },
   {
     id: 3,
     image: 'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=1200',
     title: 'Audi A4',
     subtitle: 'Tecnología premium',
-    price: '€35,000'
+    price: '$700,000 MXN'
   }
 ]
 

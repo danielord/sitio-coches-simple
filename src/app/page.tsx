@@ -13,7 +13,7 @@ export default function Home() {
           <div className="flex justify-between items-center py-6">
             <div className="flex items-center">
               <Car className="h-8 w-8 text-primary-600" />
-              <span className="ml-2 text-xl font-bold text-gray-900 dark:text-white">SitioCoches</span>
+              <span className="ml-2 text-xl font-bold text-gray-900 dark:text-white">V&R Autos</span>
             </div>
             <nav className="flex items-center space-x-4">
               <Link href="/coches" className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400">Coches</Link>
@@ -81,9 +81,9 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="flex items-center justify-center mb-4">
             <Car className="h-6 w-6 text-primary-400" />
-            <span className="ml-2 text-lg font-semibold">SitioCoches</span>
+            <span className="ml-2 text-lg font-semibold">V&R Autos</span>
           </div>
-          <p className="text-gray-400">© 2024 SitioCoches. Todos los derechos reservados.</p>
+          <p className="text-gray-400">© 2024 V&R Autos. Todos los derechos reservados.</p>
         </div>
       </footer>
     </div>

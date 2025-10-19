@@ -8,7 +8,7 @@ const cochesData = {
     marca: 'Toyota',
     modelo: 'Corolla',
     año: 2020,
-    precio: 18500,
+    precio: 370000,
     kilometraje: 45000,
     combustible: 'Híbrido',
     transmision: 'Automática',
@@ -32,7 +32,7 @@ export default function CocheDetallePage({ params }: { params: { id: string } })
           <div className="flex justify-between items-center py-6">
             <Link href="/" className="flex items-center">
               <Car className="h-8 w-8 text-blue-600" />
-              <span className="ml-2 text-xl font-bold text-gray-900">SitioCoches</span>
+              <span className="ml-2 text-xl font-bold text-gray-900">V&R Autos</span>
             </Link>
             <Link href="/coches" className="flex items-center text-gray-600 hover:text-blue-600">
               <ArrowLeft className="h-4 w-4 mr-2" />
@@ -57,7 +57,7 @@ export default function CocheDetallePage({ params }: { params: { id: string } })
               {coche.marca} {coche.modelo}
             </h1>
             <p className="text-4xl font-bold text-blue-600 mb-6">
-              €{coche.precio.toLocaleString()}
+              ${coche.precio.toLocaleString()} MXN
             </p>
 
             <div className="grid grid-cols-2 gap-4 mb-6">
