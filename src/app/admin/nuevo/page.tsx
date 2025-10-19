@@ -107,6 +107,9 @@ export default function NuevoCochePage() {
           image: generateCarSlideshowImage(newCar.marca, newCar.modelo)
         })
         localStorage.setItem('slideshowCars', JSON.stringify(slideshowCars))
+        
+        // Disparar evento para actualizar slideshow
+        window.dispatchEvent(new Event('slideshowUpdate'))
       }
     
       // Guardar en localStorage
