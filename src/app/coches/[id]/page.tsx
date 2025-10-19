@@ -1,11 +1,11 @@
+'use client'
+
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Car, ArrowLeft, Phone, Mail, Calendar, Gauge, Fuel } from 'lucide-react'
 
-export async function generateStaticParams() {
-  // Solo generar para coches por defecto, los dinámicos se manejan en runtime
-  return [{ id: '1' }, { id: '2' }, { id: '3' }]
-}
+
 
 const defaultCochesData = {
   '1': {
@@ -59,18 +59,45 @@ const defaultCochesData = {
 }
 
 export default function CocheDetallePage({ params }: { params: { id: string } }) {
-  // Buscar en coches por defecto
-  let coche = defaultCochesData[params.id as keyof typeof defaultCochesData]
-  
-  // Si no se encuentra, buscar en coches publicados
-  if (!coche && typeof window !== 'undefined') {
-    const publishedCars = JSON.parse(localStorage.getItem('cars') || '[]')
-    coche = publishedCars.find((car: {id: string}) => car.id === params.id)
+  const [coche, setCoche] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    // Buscar en coches por defecto
+    let foundCoche = defaultCochesData[params.id as keyof typeof defaultCochesData]
+    
+    // Si no se encuentra, buscar en coches publicados
+    if (!foundCoche) {
+      const publishedCars = JSON.parse(localStorage.getItem('cars') || '[]')
+      foundCoche = publishedCars.find((car: {id: string}) => car.id === params.id)
+    }
+    
+    // Fallback al primer coche por defecto
+    if (!foundCoche) {
+      foundCoche = defaultCochesData['1']
+    }
+    
+    setCoche(foundCoche)
+    setLoading(false)
+  }, [params.id])
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-gray-600">Cargando...</div>
+      </div>
+    )
   }
-  
-  // Fallback al primer coche por defecto
+
   if (!coche) {
-    coche = defaultCochesData['1']
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">Coche no encontrado</h1>
+          <Link href="/coches" className="btn-primary">Volver a Coches</Link>
+        </div>
+      </div>
+    )
   }
 
   return (
