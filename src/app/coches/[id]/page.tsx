@@ -65,7 +65,7 @@ export default function CocheDetallePage({ params }: { params: { id: string } })
   // Si no se encuentra, buscar en coches publicados
   if (!coche && typeof window !== 'undefined') {
     const publishedCars = JSON.parse(localStorage.getItem('cars') || '[]')
-    coche = publishedCars.find((car: any) => car.id === params.id)
+    coche = publishedCars.find((car: {id: string}) => car.id === params.id)
   }
   
   // Fallback al primer coche por defecto

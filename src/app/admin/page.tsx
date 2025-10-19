@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Car, ArrowLeft, Plus, BarChart3, Users } from 'lucide-react'
-import ThemeToggle from '@/components/ThemeToggle'
+
 
 export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)

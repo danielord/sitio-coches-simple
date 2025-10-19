@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowLeft, Search, Filter } from 'lucide-react'
-import ThemeToggle from '@/components/ThemeToggle'
+
 import { useState, useEffect } from 'react'
 
 const defaultCoches = [

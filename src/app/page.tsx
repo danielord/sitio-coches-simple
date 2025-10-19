@@ -1,11 +1,26 @@
+'use client'
+
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Car, Search, Star, Users } from 'lucide-react'
+import { Car, Search, Star, Users, LogOut } from 'lucide-react'
 import HeroSlideshow from '@/components/HeroSlideshow'
-import ThemeToggle from '@/components/ThemeToggle'
 import AnimatedSection from '@/components/AnimatedSection'
 
 export default function Home() {
+  const [user, setUser] = useState<{nombre: string} | null>(null)
+
+  useEffect(() => {
+    const userAuth = localStorage.getItem('userAuth')
+    if (userAuth) {
+      setUser(JSON.parse(userAuth))
+    }
+  }, [])
+
+  const logout = () => {
+    localStorage.removeItem('userAuth')
+    setUser(null)
+  }
   return (
     <div className="min-h-screen bg-gray-50 transition-colors">
       {/* Header */}
@@ -18,7 +33,18 @@ export default function Home() {
             </div>
             <nav className="flex items-center space-x-4">
               <Link href="/vender" className="text-gray-700 hover:text-blue-600 font-medium">Vender</Link>
-              <Link href="/login" className="text-gray-700 hover:text-blue-600 font-medium">Iniciar Sesión</Link>
+              {user ? (
+                <>
+                  <Link href="/dashboard" className="text-gray-700 hover:text-blue-600 font-medium">Panel</Link>
+                  <span className="text-gray-700">Hola, {user.nombre}</span>
+                  <button onClick={logout} className="text-gray-700 hover:text-blue-600 font-medium flex items-center">
+                    <LogOut className="h-4 w-4 mr-1" />
+                    Salir
+                  </button>
+                </>
+              ) : (
+                <Link href="/login" className="text-gray-700 hover:text-blue-600 font-medium">Iniciar Sesión</Link>
+              )}
               <Link href="/coches" className="btn-primary">Ver Coches</Link>
             </nav>
           </div>
