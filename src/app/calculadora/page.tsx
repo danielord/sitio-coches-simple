@@ -10,7 +10,12 @@ export default function CalculadoraPage() {
   const [enganche, setEnganche] = useState('')
   const [plazo, setPlazo] = useState('12')
   const [tasa, setTasa] = useState('12')
-  const [resultado, setResultado] = useState<any>(null)
+  const [resultado, setResultado] = useState<{
+    pagoMensual: string;
+    totalPagar: string;
+    interesTotal: string;
+    montoFinanciar: string;
+  } | null>(null)
 
   const calcular = () => {
     const precioNum = parseFloat(precio)

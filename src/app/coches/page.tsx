@@ -53,19 +53,19 @@ export default function CochesPage() {
       setCoches(allCars)
       
       const savedFavoritos = JSON.parse(localStorage.getItem('favoritos') || '[]')
-      setFavoritos(savedFavoritos.map((f: any) => f.id))
+      setFavoritos(savedFavoritos.map((f: {id: string}) => f.id))
     } catch (error) {
       console.error('Error loading data:', error)
       setCoches(defaultCoches)
     }
   }, [])
 
-  const toggleFavorito = (coche: any) => {
+  const toggleFavorito = (coche: {id: string; marca: string; modelo: string; año: number; precio: number; kilometraje: number; combustible: string; imagen: string}) => {
     const savedFavoritos = JSON.parse(localStorage.getItem('favoritos') || '[]')
-    const isFavorite = savedFavoritos.find((f: any) => f.id === coche.id)
+    const isFavorite = savedFavoritos.find((f: {id: string}) => f.id === coche.id)
     
     if (isFavorite) {
-      const newFavoritos = savedFavoritos.filter((f: any) => f.id !== coche.id)
+      const newFavoritos = savedFavoritos.filter((f: {id: string}) => f.id !== coche.id)
       localStorage.setItem('favoritos', JSON.stringify(newFavoritos))
       setFavoritos(favoritos.filter(id => id !== coche.id))
     } else {

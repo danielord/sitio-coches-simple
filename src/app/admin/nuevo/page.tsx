@@ -18,7 +18,7 @@ export default function NuevoCochePage() {
     enSlideshow: false
   })
   const [isGenerating, setIsGenerating] = useState(false)
-  const [errors, setErrors] = useState<{[key: string]: string}>({})
+  const [, setErrors] = useState<{[key: string]: string}>({})
   const router = useRouter()
 
   const validateForm = () => {

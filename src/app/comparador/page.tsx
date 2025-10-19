@@ -6,8 +6,8 @@ import Image from 'next/image'
 import { ArrowLeft, Plus, X } from 'lucide-react'
 
 export default function ComparadorPage() {
-  const [coches, setCoches] = useState<any[]>([])
-  const [selectedCars, setSelectedCars] = useState<any[]>([])
+  const [coches, setCoches] = useState<{id: string; marca: string; modelo: string; año: number; precio: number; kilometraje: number; combustible: string; imagen: string}[]>([])
+  const [selectedCars, setSelectedCars] = useState<{id: string; marca: string; modelo: string; año: number; precio: number; kilometraje: number; combustible: string; imagen: string}[]>([])
 
   useEffect(() => {
     const defaultCoches = [
@@ -19,7 +19,7 @@ export default function ComparadorPage() {
     setCoches([...defaultCoches, ...publishedCars])
   }, [])
 
-  const addToComparison = (car: any) => {
+  const addToComparison = (car: {id: string; marca: string; modelo: string; año: number; precio: number; kilometraje: number; combustible: string; imagen: string}) => {
     if (selectedCars.length < 3 && !selectedCars.find(c => c.id === car.id)) {
       setSelectedCars([...selectedCars, car])
     }
@@ -58,7 +58,7 @@ export default function ComparadorPage() {
                   <button onClick={() => removeFromComparison(car.id)} className="absolute top-2 right-2 text-red-500 hover:text-red-700">
                     <X className="h-4 w-4" />
                   </button>
-                  <img src={car.imagen} alt={`${car.marca} ${car.modelo}`} className="w-full h-32 object-cover rounded mb-3" />
+                  <Image src={car.imagen} alt={`${car.marca} ${car.modelo}`} width={300} height={128} className="w-full h-32 object-cover rounded mb-3" />
                   <h3 className="font-semibold">{car.marca} {car.modelo}</h3>
                   <div className="space-y-1 text-sm mt-2">
                     <p><strong>Año:</strong> {car.año}</p>
@@ -77,12 +77,12 @@ export default function ComparadorPage() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {coches.map((coche) => (
               <div key={coche.id} className="border rounded-lg p-4">
-                <img src={coche.imagen} alt={`${coche.marca} ${coche.modelo}`} className="w-full h-32 object-cover rounded mb-3" />
+                <Image src={coche.imagen} alt={`${coche.marca} ${coche.modelo}`} width={300} height={128} className="w-full h-32 object-cover rounded mb-3" />
                 <h3 className="font-semibold mb-2">{coche.marca} {coche.modelo} {coche.año}</h3>
                 <p className="text-blue-600 font-bold mb-3">${coche.precio.toLocaleString()} MXN</p>
                 <button 
                   onClick={() => addToComparison(coche)}
-                  disabled={selectedCars.length >= 3 || selectedCars.find(c => c.id === coche.id)}
+                  disabled={selectedCars.length >= 3 || !!selectedCars.find(c => c.id === coche.id)}
                   className="btn-secondary w-full flex items-center justify-center disabled:opacity-50"
                 >
                   <Plus className="h-4 w-4 mr-2" />

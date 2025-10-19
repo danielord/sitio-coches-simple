@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { ArrowLeft, Send, MessageCircle } from 'lucide-react'
 
 export default function MensajesPage() {
-  const [mensajes, setMensajes] = useState<any[]>([])
+  const [mensajes, setMensajes] = useState<{id: string; chatId: string; texto: string; fecha: string; remitente: string}[]>([])
   const [nuevoMensaje, setNuevoMensaje] = useState('')
   const [chatActivo, setChatActivo] = useState<string | null>(null)
 

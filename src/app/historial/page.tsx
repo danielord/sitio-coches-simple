@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { ArrowLeft, TrendingUp, AlertTriangle, CheckCircle } from 'lucide-react'
 
 export default function HistorialPage() {
-  const [historial, setHistorial] = useState<any[]>([])
+  const [historial, setHistorial] = useState<{id: string; coche: string; cambios: {fecha: string; precio: number; evento: string}[]; reportes: {tipo: string; descripcion: string; fecha: string}[]}[]>([])
   const [cocheSeleccionado, setCocheSeleccionado] = useState('')
 
   useEffect(() => {
@@ -89,7 +89,7 @@ export default function HistorialPage() {
                   Historial de Precios - {cocheActual.coche}
                 </h3>
                 <div className="space-y-3">
-                  {cocheActual.cambios.map((cambio: any, index: number) => (
+                  {cocheActual.cambios.map((cambio: {fecha: string; precio: number; evento: string}, index: number) => (
                     <div key={index} className="flex justify-between items-center p-3 bg-gray-50 rounded">
                       <div>
                         <p className="font-medium">${cambio.precio.toLocaleString()} MXN</p>
@@ -104,7 +104,7 @@ export default function HistorialPage() {
               <div className="bg-white rounded-lg shadow-md p-6">
                 <h3 className="text-lg font-semibold mb-4">Reportes de Historial</h3>
                 <div className="space-y-3">
-                  {cocheActual.reportes.map((reporte: any, index: number) => (
+                  {cocheActual.reportes.map((reporte: {tipo: string; descripcion: string; fecha: string}, index: number) => (
                     <div key={index} className="flex items-start p-3 bg-gray-50 rounded">
                       {reporte.tipo === 'Accidente' ? (
                         <AlertTriangle className="h-5 w-5 text-red-500 mr-3 mt-0.5" />

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 const defaultSlides = [
@@ -62,9 +63,11 @@ export default function HeroSlideshow() {
   return (
     <div className="relative h-96 md:h-[500px] overflow-hidden rounded-lg bg-gray-200 dark:bg-gray-700">
       <div className="absolute inset-0 transition-opacity duration-500">
-        <img
+        <Image
           src={slides[currentSlide].image}
           alt={slides[currentSlide].title}
+          width={1200}
+          height={600}
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-black bg-opacity-40" />

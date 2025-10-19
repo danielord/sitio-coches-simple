@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { Heart, ArrowLeft } from 'lucide-react'
 
 export default function FavoritosPage() {
-  const [favoritos, setFavoritos] = useState<any[]>([])
+  const [favoritos, setFavoritos] = useState<{id: string; marca: string; modelo: string; año: number; precio: number; imagen: string}[]>([])
 
   useEffect(() => {
     const savedFavoritos = JSON.parse(localStorage.getItem('favoritos') || '[]')
@@ -52,7 +52,7 @@ export default function FavoritosPage() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {favoritos.map((coche) => (
               <div key={coche.id} className="bg-white rounded-lg shadow-md overflow-hidden">
-                <img src={coche.imagen} alt={`${coche.marca} ${coche.modelo}`} className="w-full h-48 object-cover" />
+                <Image src={coche.imagen} alt={`${coche.marca} ${coche.modelo}`} width={400} height={192} className="w-full h-48 object-cover" />
                 <div className="p-6">
                   <h3 className="text-xl font-semibold mb-2">{coche.marca} {coche.modelo} {coche.año}</h3>
                   <p className="text-2xl font-bold text-blue-600 mb-4">${coche.precio.toLocaleString()} MXN</p>

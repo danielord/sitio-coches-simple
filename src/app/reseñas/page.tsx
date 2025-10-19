@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { ArrowLeft, Star, User } from 'lucide-react'
 
 export default function ReseñasPage() {
-  const [reseñas, setReseñas] = useState<any[]>([])
+  const [reseñas, setReseñas] = useState<{id: string; vendedor: string; calificacion: number; comentario: string; fecha: string; usuario: string}[]>([])
   const [nuevaReseña, setNuevaReseña] = useState({
     vendedor: '',
     calificacion: 5,

@@ -22,7 +22,7 @@ export default function LoginPage() {
       } else {
         alert('Credenciales incorrectas')
       }
-    } catch (error) {
+    } catch {
       alert('Error al procesar el login. Intenta de nuevo.')
     }
   }
