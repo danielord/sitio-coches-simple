@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { ArrowLeft, Search, Filter, Heart, GitCompare, Calculator } from 'lucide-react'
+import { ArrowLeft, Search, Filter, Heart, GitCompare, Calculator, MessageCircle, Bell, Star, TrendingUp } from 'lucide-react'
 
 import { useState, useEffect } from 'react'
 
@@ -159,18 +159,34 @@ export default function CochesPage() {
           
           <div className="flex justify-between items-center">
             <p className="text-gray-600 dark:text-gray-300">{filteredCoches.length} coches encontrados</p>
-            <div className="flex space-x-2">
+            <div className="flex flex-wrap gap-2">
               <Link href="/favoritos" className="btn-secondary flex items-center">
-                <Heart className="h-4 w-4 mr-2" />
+                <Heart className="h-4 w-4 mr-1" />
                 Favoritos
               </Link>
               <Link href="/comparador" className="btn-secondary flex items-center">
-                <GitCompare className="h-4 w-4 mr-2" />
+                <GitCompare className="h-4 w-4 mr-1" />
                 Comparar
               </Link>
               <Link href="/calculadora" className="btn-secondary flex items-center">
-                <Calculator className="h-4 w-4 mr-2" />
+                <Calculator className="h-4 w-4 mr-1" />
                 Financiar
+              </Link>
+              <Link href="/mensajes" className="btn-secondary flex items-center">
+                <MessageCircle className="h-4 w-4 mr-1" />
+                Mensajes
+              </Link>
+              <Link href="/notificaciones" className="btn-secondary flex items-center">
+                <Bell className="h-4 w-4 mr-1" />
+                Alertas
+              </Link>
+              <Link href="/reseñas" className="btn-secondary flex items-center">
+                <Star className="h-4 w-4 mr-1" />
+                Reseñas
+              </Link>
+              <Link href="/historial" className="btn-secondary flex items-center">
+                <TrendingUp className="h-4 w-4 mr-1" />
+                Historial
               </Link>
             </div>
           </div>
