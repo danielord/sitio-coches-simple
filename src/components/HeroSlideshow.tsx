@@ -6,21 +6,21 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 const slides = [
   {
     id: 1,
-    image: 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=1200&h=600&fit=crop',
+    image: 'https://picsum.photos/1200/600?random=1',
     title: 'Toyota Corolla Híbrido',
     subtitle: 'Eficiencia y confiabilidad',
     price: '$370,000 MXN'
   },
   {
     id: 2,
-    image: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=1200&h=600&fit=crop',
+    image: 'https://picsum.photos/1200/600?random=2',
     title: 'BMW Serie 3',
     subtitle: 'Lujo y deportividad',
     price: '$640,000 MXN'
   },
   {
     id: 3,
-    image: 'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=1200&h=600&fit=crop',
+    image: 'https://picsum.photos/1200/600?random=3',
     title: 'Audi A4',
     subtitle: 'Tecnología premium',
     price: '$700,000 MXN'

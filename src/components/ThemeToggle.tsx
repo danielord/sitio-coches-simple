@@ -5,46 +5,34 @@ import { Sun, Moon } from 'lucide-react'
 
 export default function ThemeToggle() {
   const [isDark, setIsDark] = useState(false)
-  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    setMounted(true)
-    const theme = localStorage.getItem('theme')
-    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+    // Check initial theme
+    const savedTheme = localStorage.getItem('theme')
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const shouldBeDark = savedTheme === 'dark' || (!savedTheme && prefersDark)
     
-    if (theme === 'dark' || (!theme && systemPrefersDark)) {
-      setIsDark(true)
-      document.documentElement.classList.add('dark')
-    } else {
-      setIsDark(false)
-      document.documentElement.classList.remove('dark')
-    }
+    setIsDark(shouldBeDark)
+    document.documentElement.classList.toggle('dark', shouldBeDark)
   }, [])
 
   const toggleTheme = () => {
-    const newTheme = !isDark
-    setIsDark(newTheme)
-    
-    if (newTheme) {
-      document.documentElement.classList.add('dark')
-      localStorage.setItem('theme', 'dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-      localStorage.setItem('theme', 'light')
-    }
+    const newIsDark = !isDark
+    setIsDark(newIsDark)
+    document.documentElement.classList.toggle('dark', newIsDark)
+    localStorage.setItem('theme', newIsDark ? 'dark' : 'light')
   }
-
-  if (!mounted) return null
 
   return (
     <button
       onClick={toggleTheme}
-      className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+      className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+      aria-label="Toggle theme"
     >
       {isDark ? (
-        <Moon className="h-5 w-5 text-gray-700 dark:text-gray-300" />
+        <Sun className="h-5 w-5 text-yellow-500" />
       ) : (
-        <Sun className="h-5 w-5 text-gray-700 dark:text-gray-300" />
+        <Moon className="h-5 w-5 text-gray-700" />
       )}
     </button>
   )
