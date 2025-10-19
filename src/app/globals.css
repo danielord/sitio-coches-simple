@@ -27,7 +27,7 @@ body {
 }
 
 .btn-primary {
-  @apply bg-primary-600 text-white px-6 py-2 rounded-md hover:bg-primary-700 transform hover:scale-105 transition-all duration-200 font-medium;
+  @apply bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transform hover:scale-105 transition-all duration-200 font-medium;
 }
 
 .btn-secondary {

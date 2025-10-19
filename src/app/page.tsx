@@ -12,11 +12,11 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div className="flex items-center">
-              <Car className="h-8 w-8 text-primary-600" />
+              <Car className="h-8 w-8 text-blue-600" />
               <span className="ml-2 text-xl font-bold text-gray-900 dark:text-white">V&R Autos</span>
             </div>
             <nav className="flex items-center space-x-4">
-              <Link href="/coches" className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400">Coches</Link>
+              <Link href="/coches" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">Coches</Link>
               <Link href="/admin" className="btn-primary">Admin</Link>
               <ThemeToggle />
             </nav>
@@ -56,19 +56,19 @@ export default function Home() {
           
           <div className="grid md:grid-cols-3 gap-8">
             <AnimatedSection delay={0.2} className="text-center">
-              <Search className="h-12 w-12 text-primary-600 mx-auto mb-4" />
+              <Search className="h-12 w-12 text-blue-600 mx-auto mb-4" />
               <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">Búsqueda Avanzada</h3>
               <p className="text-gray-600 dark:text-gray-300">Encuentra exactamente lo que buscas con nuestros filtros inteligentes</p>
             </AnimatedSection>
             
             <AnimatedSection delay={0.4} className="text-center">
-              <Star className="h-12 w-12 text-primary-600 mx-auto mb-4" />
+              <Star className="h-12 w-12 text-blue-600 mx-auto mb-4" />
               <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">Calidad Garantizada</h3>
               <p className="text-gray-600 dark:text-gray-300">Todos los coches verificados y con garantía de calidad</p>
             </AnimatedSection>
             
             <AnimatedSection delay={0.6} className="text-center">
-              <Users className="h-12 w-12 text-primary-600 mx-auto mb-4" />
+              <Users className="h-12 w-12 text-blue-600 mx-auto mb-4" />
               <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">Vendedores Confiables</h3>
               <p className="text-gray-600 dark:text-gray-300">Red de vendedores verificados y con excelente reputación</p>
             </AnimatedSection>
@@ -80,7 +80,7 @@ export default function Home() {
       <footer className="bg-gray-800 dark:bg-gray-900 text-white py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="flex items-center justify-center mb-4">
-            <Car className="h-6 w-6 text-primary-400" />
+            <Car className="h-6 w-6 text-blue-400" />
             <span className="ml-2 text-lg font-semibold">V&R Autos</span>
           </div>
           <p className="text-gray-400">© 2024 V&R Autos. Todos los derechos reservados.</p>
