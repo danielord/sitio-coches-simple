@@ -11,11 +11,16 @@ export default function AdminLoginPage() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault()
-    if (credentials.email === 'admin@vrautos.com' && credentials.password === 'admin123') {
-      localStorage.setItem('adminAuth', 'true')
-      router.push('/admin')
-    } else {
-      alert('Credenciales incorrectas. Usa: admin@vrautos.com / admin123')
+    try {
+      if (credentials.email === 'admin@vrautos.com' && credentials.password === 'admin123') {
+        localStorage.setItem('adminAuth', 'true')
+        router.push('/admin')
+      } else {
+        alert('Credenciales incorrectas. Usa: admin@vrautos.com / admin123')
+      }
+    } catch (error) {
+      console.error('Error durante el login:', error)
+      alert('Error inesperado. Por favor intenta de nuevo.')
     }
   }
 

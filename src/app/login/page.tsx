@@ -11,15 +11,19 @@ export default function LoginPage() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault()
-    const users = JSON.parse(localStorage.getItem('users') || '[]')
-    const user = users.find((u: {email: string, password: string}) => u.email === credentials.email && u.password === credentials.password)
-    
-    if (user) {
-      localStorage.setItem('userAuth', JSON.stringify(user))
-      alert('Login exitoso')
-      router.push('/dashboard')
-    } else {
-      alert('Credenciales incorrectas')
+    try {
+      const users = JSON.parse(localStorage.getItem('users') || '[]')
+      const user = users.find((u: {email: string, password: string}) => u.email === credentials.email && u.password === credentials.password)
+      
+      if (user) {
+        localStorage.setItem('userAuth', JSON.stringify(user))
+        alert('Login exitoso')
+        router.push('/dashboard')
+      } else {
+        alert('Credenciales incorrectas')
+      }
+    } catch (error) {
+      alert('Error al procesar el login. Intenta de nuevo.')
     }
   }
   return (

@@ -32,10 +32,15 @@ export default function HeroSlideshow() {
   const [slides, setSlides] = useState(defaultSlides)
 
   useEffect(() => {
-    // Cargar coches del slideshow desde localStorage
-    const slideshowCars = JSON.parse(localStorage.getItem('slideshowCars') || '[]')
-    const allSlides = [...defaultSlides, ...slideshowCars]
-    setSlides(allSlides)
+    try {
+      // Cargar coches del slideshow desde localStorage
+      const slideshowCars = JSON.parse(localStorage.getItem('slideshowCars') || '[]')
+      const allSlides = [...defaultSlides, ...slideshowCars]
+      setSlides(allSlides)
+    } catch (error) {
+      console.error('Error loading slideshow cars:', error)
+      setSlides(defaultSlides)
+    }
   }, [])
 
 

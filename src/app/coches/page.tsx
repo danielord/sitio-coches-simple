@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { ArrowLeft, Search, Filter } from 'lucide-react'
+import { ArrowLeft, Search, Filter, Heart, GitCompare, Calculator } from 'lucide-react'
 
 import { useState, useEffect } from 'react'
 
@@ -44,13 +44,36 @@ export default function CochesPage() {
   const [selectedMarca, setSelectedMarca] = useState('')
   const [maxPrecio, setMaxPrecio] = useState('')
   const [coches, setCoches] = useState(defaultCoches)
+  const [favoritos, setFavoritos] = useState<string[]>([])
 
   useEffect(() => {
-    // Cargar coches publicados desde localStorage
-    const publishedCars = JSON.parse(localStorage.getItem('cars') || '[]')
-    const allCars = [...defaultCoches, ...publishedCars]
-    setCoches(allCars)
+    try {
+      const publishedCars = JSON.parse(localStorage.getItem('cars') || '[]')
+      const allCars = [...defaultCoches, ...publishedCars]
+      setCoches(allCars)
+      
+      const savedFavoritos = JSON.parse(localStorage.getItem('favoritos') || '[]')
+      setFavoritos(savedFavoritos.map((f: any) => f.id))
+    } catch (error) {
+      console.error('Error loading data:', error)
+      setCoches(defaultCoches)
+    }
   }, [])
+
+  const toggleFavorito = (coche: any) => {
+    const savedFavoritos = JSON.parse(localStorage.getItem('favoritos') || '[]')
+    const isFavorite = savedFavoritos.find((f: any) => f.id === coche.id)
+    
+    if (isFavorite) {
+      const newFavoritos = savedFavoritos.filter((f: any) => f.id !== coche.id)
+      localStorage.setItem('favoritos', JSON.stringify(newFavoritos))
+      setFavoritos(favoritos.filter(id => id !== coche.id))
+    } else {
+      const newFavoritos = [...savedFavoritos, coche]
+      localStorage.setItem('favoritos', JSON.stringify(newFavoritos))
+      setFavoritos([...favoritos, coche.id])
+    }
+  }
 
   const filteredCoches = coches.filter(coche => {
     const matchesSearch = coche.marca.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -134,7 +157,23 @@ export default function CochesPage() {
             </div>
           </div>
           
-          <p className="text-gray-600 dark:text-gray-300">{filteredCoches.length} coches encontrados</p>
+          <div className="flex justify-between items-center">
+            <p className="text-gray-600 dark:text-gray-300">{filteredCoches.length} coches encontrados</p>
+            <div className="flex space-x-2">
+              <Link href="/favoritos" className="btn-secondary flex items-center">
+                <Heart className="h-4 w-4 mr-2" />
+                Favoritos
+              </Link>
+              <Link href="/comparador" className="btn-secondary flex items-center">
+                <GitCompare className="h-4 w-4 mr-2" />
+                Comparar
+              </Link>
+              <Link href="/calculadora" className="btn-secondary flex items-center">
+                <Calculator className="h-4 w-4 mr-2" />
+                Financiar
+              </Link>
+            </div>
+          </div>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -157,12 +196,17 @@ export default function CochesPage() {
                 <p className="text-2xl font-bold text-blue-600 mb-4">
                   ${coche.precio.toLocaleString()} MXN
                 </p>
-                <Link 
-                  href={`/coches/${coche.id}`}
-                  className="btn-primary w-full text-center block"
-                >
-                  Ver Detalles
-                </Link>
+                <div className="flex space-x-2">
+                  <Link href={`/coches/${coche.id}`} className="btn-primary flex-1 text-center">
+                    Ver Detalles
+                  </Link>
+                  <button 
+                    onClick={() => toggleFavorito(coche)}
+                    className={`p-2 rounded ${favoritos.includes(coche.id) ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-600'} hover:bg-red-600 hover:text-white`}
+                  >
+                    <Heart className="h-4 w-4" />
+                  </button>
+                </div>
               </div>
             </div>
           ))}

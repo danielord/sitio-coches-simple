@@ -5,6 +5,10 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Car, ArrowLeft, Save, Sparkles } from 'lucide-react'
 
+export async function generateStaticParams() {
+  return [{ id: '1' }, { id: '2' }, { id: '3' }]
+}
+
 export default function EditarCochePage({ params }: { params: { id: string } }) {
   const [formData, setFormData] = useState({
     marca: '',
@@ -22,45 +26,63 @@ export default function EditarCochePage({ params }: { params: { id: string } }) 
   const router = useRouter()
 
   useEffect(() => {
-    // Cargar datos del coche
-    const allCars = JSON.parse(localStorage.getItem('cars') || '[]')
-    const car = allCars.find((c: {id: string}) => c.id === params.id)
-    
-    if (car) {
-      setFormData({
-        marca: car.marca,
-        modelo: car.modelo,
-        año: car.año.toString(),
-        precio: car.precio.toString(),
-        kilometraje: car.kilometraje.toString(),
-        combustible: car.combustible,
-        descripcion: car.descripcion,
-        imagen: car.imagen,
-        enSlideshow: false // Verificar si está en slideshow
-      })
+    try {
+      // Cargar datos del coche
+      const allCars = JSON.parse(localStorage.getItem('cars') || '[]')
+      const car = allCars.find((c: {id: string}) => c.id === params.id)
+      
+      if (car) {
+        setFormData({
+          marca: car.marca || '',
+          modelo: car.modelo || '',
+          año: car.año?.toString() || '',
+          precio: car.precio?.toString() || '',
+          kilometraje: car.kilometraje?.toString() || '',
+          combustible: car.combustible || '',
+          descripcion: car.descripcion || '',
+          imagen: car.imagen || '',
+          enSlideshow: false
+        })
+      } else {
+        alert('Coche no encontrado')
+        router.push('/dashboard')
+        return
+      }
+    } catch (error) {
+      console.error('Error loading car data:', error)
+      alert('Error al cargar los datos del coche')
+      router.push('/dashboard')
+      return
     }
     setLoading(false)
-  }, [params.id])
+  }, [params.id, router])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     
-    // Actualizar coche existente
-    const allCars = JSON.parse(localStorage.getItem('cars') || '[]')
-    const carIndex = allCars.findIndex((c: {id: string}) => c.id === params.id)
-    
-    if (carIndex !== -1) {
-      allCars[carIndex] = {
-        ...allCars[carIndex],
-        ...formData,
-        año: parseInt(formData.año),
-        precio: parseInt(formData.precio),
-        kilometraje: parseInt(formData.kilometraje)
-      }
+    try {
+      // Actualizar coche existente
+      const allCars = JSON.parse(localStorage.getItem('cars') || '[]')
+      const carIndex = allCars.findIndex((c: {id: string}) => c.id === params.id)
       
-      localStorage.setItem('cars', JSON.stringify(allCars))
-      alert('Coche actualizado exitosamente!')
-      router.push('/dashboard')
+      if (carIndex !== -1) {
+        allCars[carIndex] = {
+          ...allCars[carIndex],
+          ...formData,
+          año: parseInt(formData.año),
+          precio: parseInt(formData.precio),
+          kilometraje: parseInt(formData.kilometraje)
+        }
+        
+        localStorage.setItem('cars', JSON.stringify(allCars))
+        alert('Coche actualizado exitosamente!')
+        router.push('/dashboard')
+      } else {
+        alert('Error: No se encontró el coche a actualizar')
+      }
+    } catch (error) {
+      console.error('Error al actualizar el coche:', error)
+      alert('Error al actualizar el coche. Inténtalo de nuevo.')
     }
   }
 

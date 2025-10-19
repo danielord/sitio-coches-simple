@@ -18,13 +18,37 @@ export default function NuevoCochePage() {
     enSlideshow: false
   })
   const [isGenerating, setIsGenerating] = useState(false)
+  const [errors, setErrors] = useState<{[key: string]: string}>({})
   const router = useRouter()
+
+  const validateForm = () => {
+    const newErrors: {[key: string]: string} = {}
+    const currentYear = new Date().getFullYear()
+    
+    if (parseInt(formData.año) < 1900 || parseInt(formData.año) > currentYear + 1) {
+      newErrors.año = 'Año debe estar entre 1900 y ' + (currentYear + 1)
+    }
+    if (parseInt(formData.precio) < 1000) {
+      newErrors.precio = 'Precio debe ser mayor a $1,000 MXN'
+    }
+    if (parseInt(formData.kilometraje) < 0) {
+      newErrors.kilometraje = 'Kilometraje no puede ser negativo'
+    }
+    
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     
-    // Obtener coches existentes
-    const existingCars = JSON.parse(localStorage.getItem('cars') || '[]')
+    if (!validateForm()) {
+      return
+    }
+    
+    try {
+      // Obtener coches existentes
+      const existingCars = JSON.parse(localStorage.getItem('cars') || '[]')
     
     // Crear nuevo coche
     const newCar = {
@@ -54,12 +78,16 @@ export default function NuevoCochePage() {
       localStorage.setItem('slideshowCars', JSON.stringify(slideshowCars))
     }
     
-    // Guardar en localStorage
-    existingCars.push(newCar)
-    localStorage.setItem('cars', JSON.stringify(existingCars))
-    
-    alert('Coche publicado exitosamente!')
-    router.push('/dashboard')
+      // Guardar en localStorage
+      existingCars.push(newCar)
+      localStorage.setItem('cars', JSON.stringify(existingCars))
+      
+      alert('Coche publicado exitosamente!')
+      router.push('/dashboard')
+    } catch (error) {
+      console.error('Error al guardar el coche:', error)
+      alert('Error al publicar el coche. Inténtalo de nuevo.')
+    }
   }
 
   const generateDescription = async () => {
@@ -70,12 +98,22 @@ export default function NuevoCochePage() {
     
     setIsGenerating(true)
     
+    // Sanitizar entrada para prevenir XSS
+    const sanitizedMarca = formData.marca.replace(/[<>"'&\\]/g, '').trim()
+    const sanitizedModelo = formData.modelo.replace(/[<>"'&\\]/g, '').trim()
+    
+    if (!sanitizedMarca || !sanitizedModelo) {
+      alert('Marca y modelo no pueden estar vacíos')
+      setIsGenerating(false)
+      return
+    }
+    
     // Simulación de AI (en producción usarías OpenAI API)
     setTimeout(() => {
       const descriptions = [
-        `Excelente ${formData.marca} ${formData.modelo} en perfectas condiciones. Mantenimiento al día, ideal para uso diario.`,
-        `${formData.marca} ${formData.modelo} con bajo kilometraje y excelente estado. Perfecto para familias.`,
-        `Impecable ${formData.marca} ${formData.modelo}, único dueño, servicios en agencia. Una gran oportunidad.`
+        `Excelente ${sanitizedMarca} ${sanitizedModelo} en perfectas condiciones. Mantenimiento al día, ideal para uso diario.`,
+        `${sanitizedMarca} ${sanitizedModelo} con bajo kilometraje y excelente estado. Perfecto para familias.`,
+        `Impecable ${sanitizedMarca} ${sanitizedModelo}, único dueño, servicios en agencia. Una gran oportunidad.`
       ]
       
       const randomDesc = descriptions[Math.floor(Math.random() * descriptions.length)]
@@ -85,9 +123,12 @@ export default function NuevoCochePage() {
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target
+    // Sanitize input to prevent XSS
+    const sanitizedValue = value.replace(/[<>"'&\\]/g, '')
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [name]: sanitizedValue
     })
   }
 
@@ -209,10 +250,19 @@ export default function NuevoCochePage() {
                   onChange={(e) => {
                     const file = e.target.files?.[0]
                     if (file) {
+                      if (file.size > 5 * 1024 * 1024) {
+                        alert('La imagen debe ser menor a 5MB')
+                        return
+                      }
+                      if (!file.type.startsWith('image/')) {
+                        alert('Solo se permiten archivos de imagen')
+                        return
+                      }
                       const reader = new FileReader()
                       reader.onload = (event) => {
                         setFormData({...formData, imagen: event.target?.result as string})
                       }
+                      reader.onerror = () => alert('Error al cargar la imagen')
                       reader.readAsDataURL(file)
                     }
                   }}

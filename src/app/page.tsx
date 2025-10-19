@@ -11,9 +11,14 @@ export default function Home() {
   const [user, setUser] = useState<{nombre: string} | null>(null)
 
   useEffect(() => {
-    const userAuth = localStorage.getItem('userAuth')
-    if (userAuth) {
-      setUser(JSON.parse(userAuth))
+    try {
+      const userAuth = localStorage.getItem('userAuth')
+      if (userAuth) {
+        setUser(JSON.parse(userAuth))
+      }
+    } catch (error) {
+      console.error('Error parsing user data:', error)
+      localStorage.removeItem('userAuth')
     }
   }, [])
 

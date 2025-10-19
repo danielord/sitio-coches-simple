@@ -13,19 +13,20 @@ export default function AnimatedSection({ children, className = '', delay = 0 }:
   const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
+    const element = ref.current
+    if (!element) return
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setTimeout(() => setIsVisible(true), delay * 1000)
+          observer.unobserve(element)
         }
       },
       { threshold: 0.1 }
     )
 
-    if (ref.current) {
-      observer.observe(ref.current)
-    }
-
+    observer.observe(element)
     return () => observer.disconnect()
   }, [delay])
 
