@@ -5,10 +5,6 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Car, ArrowLeft, Save, Sparkles } from 'lucide-react'
 
-export async function generateStaticParams() {
-  return [{ id: '1' }, { id: '2' }, { id: '3' }]
-}
-
 export default function EditarCochePage({ params }: { params: { id: string } }) {
   const [formData, setFormData] = useState({
     marca: '',
