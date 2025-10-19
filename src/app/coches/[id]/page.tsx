@@ -59,7 +59,7 @@ const defaultCochesData = {
 }
 
 export default function CocheDetallePage({ params }: { params: { id: string } }) {
-  const [coche, setCoche] = useState<{marca: string, modelo: string, año: number, precio: number, kilometraje: number, combustible: string, descripcion: string, imagen: string, vendedor: {nombre: string, telefono: string, email: string}} | null>(null)
+  const [coche, setCoche] = useState<{marca: string, modelo: string, año: number, precio: number, kilometraje: number, combustible: string, transmision?: string, descripcion: string, imagen: string, vendedor: {nombre: string, telefono: string, email: string}} | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -156,7 +156,7 @@ export default function CocheDetallePage({ params }: { params: { id: string } })
               </div>
               <div className="flex items-center">
                 <Car className="h-5 w-5 text-gray-400 mr-2" />
-                <span className="text-gray-700 dark:text-gray-300">{coche.transmision}</span>
+                <span className="text-gray-700">{coche.transmision || 'Automática'}</span>
               </div>
             </div>
 
