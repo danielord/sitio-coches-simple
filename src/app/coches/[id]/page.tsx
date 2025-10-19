@@ -1,5 +1,3 @@
-'use client'
-
 import Link from 'next/link'
 import { Car, ArrowLeft, Phone, Mail, Calendar, Gauge, Fuel } from 'lucide-react'
 
