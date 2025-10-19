@@ -15,7 +15,7 @@ const defaultCoches = [
     precio: 370000,
     kilometraje: 45000,
     combustible: 'Híbrido',
-    imagen: 'https://via.placeholder.com/400x200?text=Toyota+Corolla'
+    imagen: 'https://picsum.photos/400/200?random=10'
   },
   {
     id: '2',
@@ -25,7 +25,7 @@ const defaultCoches = [
     precio: 640000,
     kilometraje: 38000,
     combustible: 'Gasolina',
-    imagen: 'https://via.placeholder.com/400x200?text=BMW+Serie+3'
+    imagen: 'https://picsum.photos/400/200?random=11'
   },
   {
     id: '3',
@@ -35,7 +35,7 @@ const defaultCoches = [
     precio: 700000,
     kilometraje: 25000,
     combustible: 'Diésel',
-    imagen: 'https://via.placeholder.com/400x200?text=Audi+A4'
+    imagen: 'https://picsum.photos/400/200?random=12'
   }
 ]
 

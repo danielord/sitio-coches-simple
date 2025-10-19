@@ -33,7 +33,7 @@ export default function NuevoCochePage() {
       año: parseInt(formData.año),
       precio: parseInt(formData.precio),
       kilometraje: parseInt(formData.kilometraje),
-      imagen: formData.imagen || 'https://via.placeholder.com/400x200?text=Coche',
+      imagen: formData.imagen || 'https://picsum.photos/400/200?random=' + Date.now(),
       vendedor: {
         nombre: JSON.parse(localStorage.getItem('userAuth') || '{}').nombre || 'Vendedor',
         telefono: '+52 55 1234 5678',
