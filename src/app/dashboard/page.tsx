@@ -8,7 +8,7 @@ import { Car, Plus, LogOut } from 'lucide-react'
 
 export default function DashboardPage() {
   const [user, setUser] = useState<{nombre: string, email: string} | null>(null)
-  const [userCars, setUserCars] = useState<any[]>([])
+  const [userCars, setUserCars] = useState<{id: string, marca: string, modelo: string, año: number, precio: number, imagen: string, vendedor?: any}[]>([])
   const router = useRouter()
 
   useEffect(() => {
@@ -19,7 +19,7 @@ export default function DashboardPage() {
       
       // Cargar coches del usuario
       const allCars = JSON.parse(localStorage.getItem('cars') || '[]')
-      const userPublishedCars = allCars.filter((car: any) => 
+      const userPublishedCars = allCars.filter((car: {vendedor?: any}) => 
         car.vendedor?.email === userData.email || car.vendedor === userData.nombre
       )
       setUserCars(userPublishedCars)
@@ -31,7 +31,7 @@ export default function DashboardPage() {
   const deleteCar = (carId: string) => {
     if (confirm('¿Estás seguro de eliminar este coche?')) {
       const allCars = JSON.parse(localStorage.getItem('cars') || '[]')
-      const updatedCars = allCars.filter((car: any) => car.id !== carId)
+      const updatedCars = allCars.filter((car: {id: string}) => car.id !== carId)
       localStorage.setItem('cars', JSON.stringify(updatedCars))
       setUserCars(userCars.filter(car => car.id !== carId))
     }

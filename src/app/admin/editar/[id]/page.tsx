@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Car, ArrowLeft, Save, Sparkles, Upload } from 'lucide-react'
+import { Car, ArrowLeft, Save, Sparkles } from 'lucide-react'
 
 export default function EditarCochePage({ params }: { params: { id: string } }) {
   const [formData, setFormData] = useState({
@@ -24,7 +24,7 @@ export default function EditarCochePage({ params }: { params: { id: string } }) 
   useEffect(() => {
     // Cargar datos del coche
     const allCars = JSON.parse(localStorage.getItem('cars') || '[]')
-    const car = allCars.find((c: any) => c.id === params.id)
+    const car = allCars.find((c: {id: string}) => c.id === params.id)
     
     if (car) {
       setFormData({
@@ -47,7 +47,7 @@ export default function EditarCochePage({ params }: { params: { id: string } }) 
     
     // Actualizar coche existente
     const allCars = JSON.parse(localStorage.getItem('cars') || '[]')
-    const carIndex = allCars.findIndex((c: any) => c.id === params.id)
+    const carIndex = allCars.findIndex((c: {id: string}) => c.id === params.id)
     
     if (carIndex !== -1) {
       allCars[carIndex] = {
