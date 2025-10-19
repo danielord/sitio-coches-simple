@@ -84,9 +84,11 @@ export default function CocheDetallePage({ params }: { params: { id: string } })
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid lg:grid-cols-2 gap-8">
           <div>
-            <img
+            <Image
               src={coche.imagen}
               alt={`${coche.marca} ${coche.modelo}`}
+              width={600}
+              height={400}
               className="w-full h-96 object-cover rounded-lg"
             />
           </div>

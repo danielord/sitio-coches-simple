@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { Car, ArrowLeft, Search, Filter } from 'lucide-react'
+import { ArrowLeft, Search, Filter } from 'lucide-react'
 import ThemeToggle from '@/components/ThemeToggle'
 import { useState } from 'react'
 
@@ -133,9 +133,11 @@ export default function CochesPage() {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredCoches.map((coche) => (
             <div key={coche.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-              <img 
+              <Image 
                 src={coche.imagen} 
                 alt={`${coche.marca} ${coche.modelo}`}
+                width={400}
+                height={200}
                 className="w-full h-48 object-cover"
               />
               <div className="p-6">

@@ -29,7 +29,7 @@ const slides = [
 
 export default function HeroSlideshow() {
   const [currentSlide, setCurrentSlide] = useState(0)
-  const [isLoaded, setIsLoaded] = useState(false)
+
 
   useEffect(() => {
     const timer = setInterval(() => {

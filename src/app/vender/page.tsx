@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { Car, Plus, Users, TrendingUp } from 'lucide-react'
+import { Plus, Users, TrendingUp } from 'lucide-react'
 
 export default function VenderPage() {
   return (
