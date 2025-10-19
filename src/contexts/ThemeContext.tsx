@@ -1,6 +1,7 @@
 'use client'
 
 import { createContext, useContext, useEffect, useState } from 'react'
+import { SafeStorage } from '@/lib/storage'
 
 type Theme = 'light' | 'dark'
 
@@ -17,11 +18,11 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     setMounted(true)
-    const savedTheme = localStorage.getItem('theme') as Theme
+    const savedTheme = SafeStorage.get('theme') as Theme
     if (savedTheme) {
       setTheme(savedTheme)
       document.documentElement.classList.toggle('dark', savedTheme === 'dark')
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
       setTheme('dark')
       document.documentElement.classList.add('dark')
     }
@@ -29,7 +30,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (mounted) {
-      localStorage.setItem('theme', theme)
+      SafeStorage.set('theme', theme)
       document.documentElement.classList.toggle('dark', theme === 'dark')
     }
   }, [theme, mounted])
