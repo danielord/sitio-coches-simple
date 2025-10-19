@@ -1,9 +1,11 @@
+'use client'
+
 import Link from 'next/link'
+import { Car, ArrowLeft, Phone, Mail, Calendar, Gauge, Fuel } from 'lucide-react'
 
 export async function generateStaticParams() {
   return [{ id: '1' }, { id: '2' }, { id: '3' }]
 }
-import { Car, ArrowLeft, Phone, Mail, Calendar, Gauge, Fuel } from 'lucide-react'
 
 const cochesData = {
   '1': {
@@ -18,26 +20,57 @@ const cochesData = {
     imagen: 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=600',
     vendedor: {
       nombre: 'Carlos García',
-      telefono: '+34 600 123 456',
-      email: 'carlos@example.com'
+      telefono: '+52 55 1234 5678',
+      email: 'carlos@vrautos.com'
+    }
+  },
+  '2': {
+    marca: 'BMW',
+    modelo: 'Serie 3',
+    año: 2019,
+    precio: 640000,
+    kilometraje: 38000,
+    combustible: 'Gasolina',
+    transmision: 'Automática',
+    descripcion: 'BMW Serie 3 en excelente estado con equipamiento completo.',
+    imagen: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=600',
+    vendedor: {
+      nombre: 'Ana López',
+      telefono: '+52 55 9876 5432',
+      email: 'ana@vrautos.com'
+    }
+  },
+  '3': {
+    marca: 'Audi',
+    modelo: 'A4',
+    año: 2021,
+    precio: 700000,
+    kilometraje: 25000,
+    combustible: 'Diésel',
+    transmision: 'Automática',
+    descripcion: 'Audi A4 prácticamente nuevo con garantía oficial.',
+    imagen: 'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=600',
+    vendedor: {
+      nombre: 'Miguel Ruiz',
+      telefono: '+52 55 5555 1234',
+      email: 'miguel@vrautos.com'
     }
   }
 }
 
 export default function CocheDetallePage({ params }: { params: { id: string } }) {
-  const carId = params.id === '1' ? '1' : '1'
-  const coche = cochesData[carId]
+  const coche = cochesData[params.id as keyof typeof cochesData] || cochesData['1']
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow-sm">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <header className="bg-white dark:bg-gray-800 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <Link href="/" className="flex items-center">
               <Car className="h-8 w-8 text-blue-600" />
-              <span className="ml-2 text-xl font-bold text-gray-900">V&R Autos</span>
+              <span className="ml-2 text-xl font-bold text-gray-900 dark:text-white">V&R Autos</span>
             </Link>
-            <Link href="/coches" className="flex items-center text-gray-600 hover:text-blue-600">
+            <Link href="/coches" className="flex items-center text-gray-600 dark:text-gray-300 hover:text-blue-600">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Volver a Coches
             </Link>
@@ -56,7 +89,7 @@ export default function CocheDetallePage({ params }: { params: { id: string } })
           </div>
 
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
               {coche.marca} {coche.modelo}
             </h1>
             <p className="text-4xl font-bold text-blue-600 mb-6">
@@ -66,32 +99,32 @@ export default function CocheDetallePage({ params }: { params: { id: string } })
             <div className="grid grid-cols-2 gap-4 mb-6">
               <div className="flex items-center">
                 <Calendar className="h-5 w-5 text-gray-400 mr-2" />
-                <span>{coche.año}</span>
+                <span className="text-gray-700 dark:text-gray-300">{coche.año}</span>
               </div>
               <div className="flex items-center">
                 <Gauge className="h-5 w-5 text-gray-400 mr-2" />
-                <span>{coche.kilometraje.toLocaleString()} km</span>
+                <span className="text-gray-700 dark:text-gray-300">{coche.kilometraje.toLocaleString()} km</span>
               </div>
               <div className="flex items-center">
                 <Fuel className="h-5 w-5 text-gray-400 mr-2" />
-                <span>{coche.combustible}</span>
+                <span className="text-gray-700 dark:text-gray-300">{coche.combustible}</span>
               </div>
               <div className="flex items-center">
                 <Car className="h-5 w-5 text-gray-400 mr-2" />
-                <span>{coche.transmision}</span>
+                <span className="text-gray-700 dark:text-gray-300">{coche.transmision}</span>
               </div>
             </div>
 
             <div className="mb-6">
-              <h2 className="text-xl font-semibold mb-3">Descripción</h2>
-              <p className="text-gray-700">{coche.descripcion}</p>
+              <h2 className="text-xl font-semibold mb-3 text-gray-900 dark:text-white">Descripción</h2>
+              <p className="text-gray-700 dark:text-gray-300">{coche.descripcion}</p>
             </div>
 
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="text-lg font-semibold mb-4">Contactar Vendedor</h3>
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
+              <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Contactar Vendedor</h3>
               <div className="space-y-3">
                 <div className="flex items-center">
-                  <span className="font-medium">{coche.vendedor.nombre}</span>
+                  <span className="font-medium text-gray-900 dark:text-white">{coche.vendedor.nombre}</span>
                 </div>
                 <div className="flex items-center">
                   <Phone className="h-4 w-4 text-gray-400 mr-2" />
@@ -110,13 +143,13 @@ export default function CocheDetallePage({ params }: { params: { id: string } })
               <div className="mt-4 space-y-2">
                 <a
                   href={`tel:${coche.vendedor.telefono}`}
-                  className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors text-center block"
+                  className="btn-primary w-full text-center block"
                 >
                   Llamar Ahora
                 </a>
                 <a
                   href={`mailto:${coche.vendedor.email}?subject=Interés en ${coche.marca} ${coche.modelo}`}
-                  className="w-full bg-gray-200 text-gray-800 py-2 px-4 rounded-md hover:bg-gray-300 transition-colors text-center block"
+                  className="btn-secondary w-full text-center block"
                 >
                   Enviar Email
                 </a>

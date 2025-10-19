@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Car, ArrowLeft } from 'lucide-react'
+import ThemeToggle from '@/components/ThemeToggle'
 
 const coches = [
   {
@@ -36,41 +37,44 @@ const coches = [
 
 export default function CochesPage() {
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow-sm">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <header className="bg-white dark:bg-gray-800 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <Link href="/" className="flex items-center">
               <Car className="h-8 w-8 text-blue-600" />
-              <span className="ml-2 text-xl font-bold text-gray-900">V&R Autos</span>
+              <span className="ml-2 text-xl font-bold text-gray-900 dark:text-white">V&R Autos</span>
             </Link>
-            <Link href="/" className="flex items-center text-gray-600 hover:text-blue-600">
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Volver al Inicio
-            </Link>
+            <div className="flex items-center space-x-4">
+              <Link href="/" className="flex items-center text-gray-600 dark:text-gray-300 hover:text-blue-600">
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Volver al Inicio
+              </Link>
+              <ThemeToggle />
+            </div>
           </div>
         </div>
       </header>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Coches Disponibles</h1>
-          <p className="text-gray-600">{coches.length} coches encontrados</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Coches Disponibles</h1>
+          <p className="text-gray-600 dark:text-gray-300">{coches.length} coches encontrados</p>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {coches.map((coche) => (
-            <div key={coche.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+            <div key={coche.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
               <img 
                 src={coche.imagen} 
                 alt={`${coche.marca} ${coche.modelo}`}
                 className="w-full h-48 object-cover"
               />
               <div className="p-6">
-                <h3 className="text-xl font-semibold mb-2">
+                <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">
                   {coche.marca} {coche.modelo} {coche.año}
                 </h3>
-                <p className="text-gray-600 mb-2">
+                <p className="text-gray-600 dark:text-gray-300 mb-2">
                   {coche.kilometraje.toLocaleString()} km • {coche.combustible}
                 </p>
                 <p className="text-2xl font-bold text-blue-600 mb-4">
@@ -78,7 +82,7 @@ export default function CochesPage() {
                 </p>
                 <Link 
                   href={`/coches/${coche.id}`}
-                  className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors text-center block"
+                  className="btn-primary w-full text-center block"
                 >
                   Ver Detalles
                 </Link>
