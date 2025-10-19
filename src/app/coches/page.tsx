@@ -4,38 +4,38 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowLeft, Search, Filter } from 'lucide-react'
 import ThemeToggle from '@/components/ThemeToggle'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
-const coches = [
+const defaultCoches = [
   {
-    id: 1,
+    id: '1',
     marca: 'Toyota',
     modelo: 'Corolla',
     año: 2020,
     precio: 370000,
     kilometraje: 45000,
     combustible: 'Híbrido',
-    imagen: 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=400'
+    imagen: 'https://via.placeholder.com/400x200?text=Toyota+Corolla'
   },
   {
-    id: 2,
+    id: '2',
     marca: 'BMW',
     modelo: 'Serie 3',
     año: 2019,
     precio: 640000,
     kilometraje: 38000,
     combustible: 'Gasolina',
-    imagen: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=400'
+    imagen: 'https://via.placeholder.com/400x200?text=BMW+Serie+3'
   },
   {
-    id: 3,
+    id: '3',
     marca: 'Audi',
     modelo: 'A4',
     año: 2021,
     precio: 700000,
     kilometraje: 25000,
     combustible: 'Diésel',
-    imagen: 'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=400'
+    imagen: 'https://via.placeholder.com/400x200?text=Audi+A4'
   }
 ]
 
@@ -43,6 +43,14 @@ export default function CochesPage() {
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedMarca, setSelectedMarca] = useState('')
   const [maxPrecio, setMaxPrecio] = useState('')
+  const [coches, setCoches] = useState(defaultCoches)
+
+  useEffect(() => {
+    // Cargar coches publicados desde localStorage
+    const publishedCars = JSON.parse(localStorage.getItem('cars') || '[]')
+    const allCars = [...defaultCoches, ...publishedCars]
+    setCoches(allCars)
+  }, [])
 
   const filteredCoches = coches.filter(coche => {
     const matchesSearch = coche.marca.toLowerCase().includes(searchTerm.toLowerCase()) ||

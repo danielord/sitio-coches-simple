@@ -1,8 +1,9 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Car, ArrowLeft, Save } from 'lucide-react'
+import { Car, ArrowLeft, Save, Sparkles, Upload } from 'lucide-react'
 
 export default function NuevoCochePage() {
   const [formData, setFormData] = useState({
@@ -12,12 +13,57 @@ export default function NuevoCochePage() {
     precio: '',
     kilometraje: '',
     combustible: '',
-    descripcion: ''
+    descripcion: '',
+    imagen: ''
   })
+  const [isGenerating, setIsGenerating] = useState(false)
+  const router = useRouter()
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    alert('Coche guardado exitosamente!')
+    
+    // Obtener coches existentes
+    const existingCars = JSON.parse(localStorage.getItem('cars') || '[]')
+    
+    // Crear nuevo coche
+    const newCar = {
+      id: Date.now().toString(),
+      ...formData,
+      año: parseInt(formData.año),
+      precio: parseInt(formData.precio),
+      kilometraje: parseInt(formData.kilometraje),
+      imagen: formData.imagen || 'https://via.placeholder.com/400x200?text=Coche',
+      vendedor: JSON.parse(localStorage.getItem('userAuth') || '{}').nombre || 'Vendedor'
+    }
+    
+    // Guardar en localStorage
+    existingCars.push(newCar)
+    localStorage.setItem('cars', JSON.stringify(existingCars))
+    
+    alert('Coche publicado exitosamente!')
+    router.push('/dashboard')
+  }
+
+  const generateDescription = async () => {
+    if (!formData.marca || !formData.modelo) {
+      alert('Ingresa marca y modelo primero')
+      return
+    }
+    
+    setIsGenerating(true)
+    
+    // Simulación de AI (en producción usarías OpenAI API)
+    setTimeout(() => {
+      const descriptions = [
+        `Excelente ${formData.marca} ${formData.modelo} en perfectas condiciones. Mantenimiento al día, ideal para uso diario.`,
+        `${formData.marca} ${formData.modelo} con bajo kilometraje y excelente estado. Perfecto para familias.`,
+        `Impecable ${formData.marca} ${formData.modelo}, único dueño, servicios en agencia. Una gran oportunidad.`
+      ]
+      
+      const randomDesc = descriptions[Math.floor(Math.random() * descriptions.length)]
+      setFormData({...formData, descripcion: randomDesc})
+      setIsGenerating(false)
+    }, 2000)
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -129,7 +175,40 @@ export default function NuevoCochePage() {
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Descripción</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Imagen URL</label>
+              <div className="flex space-x-2">
+                <input
+                  type="url"
+                  name="imagen"
+                  value={formData.imagen}
+                  onChange={handleChange}
+                  placeholder="https://ejemplo.com/imagen.jpg"
+                  className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                />
+                <button
+                  type="button"
+                  className="btn-secondary flex items-center"
+                  onClick={() => alert('Función de subida de imagen próximamente')}
+                >
+                  <Upload className="h-4 w-4 mr-2" />
+                  Subir
+                </button>
+              </div>
+            </div>
+            
+            <div>
+              <div className="flex justify-between items-center mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Descripción</label>
+                <button
+                  type="button"
+                  onClick={generateDescription}
+                  disabled={isGenerating}
+                  className="btn-secondary flex items-center text-sm"
+                >
+                  <Sparkles className="h-4 w-4 mr-1" />
+                  {isGenerating ? 'Generando...' : 'Generar con IA'}
+                </button>
+              </div>
               <textarea
                 name="descripcion"
                 value={formData.descripcion}
