@@ -1,36 +1,22 @@
 'use client'
 
-import { useState, useEffect } from 'react'
 import { Sun, Moon } from 'lucide-react'
+import { useTheme } from '@/contexts/ThemeContext'
 
 export default function ThemeToggle() {
-  const [isDark, setIsDark] = useState(false)
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    setMounted(true)
-    const savedTheme = localStorage.getItem('theme')
-    const shouldBeDark = savedTheme === 'dark'
-    
-    setIsDark(shouldBeDark)
-    document.documentElement.className = shouldBeDark ? 'dark' : ''
-  }, [])
-
-  const toggleTheme = () => {
-    const newIsDark = !isDark
-    setIsDark(newIsDark)
-    document.documentElement.className = newIsDark ? 'dark' : ''
-    localStorage.setItem('theme', newIsDark ? 'dark' : 'light')
-  }
-
-  if (!mounted) return <div className="w-10 h-10"></div>
+  const { theme, toggleTheme } = useTheme()
 
   return (
     <button
       onClick={toggleTheme}
-      className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+      className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+      aria-label={`Cambiar a tema ${theme === 'light' ? 'oscuro' : 'claro'}`}
     >
-      {isDark ? <Sun className="h-5 w-5 text-yellow-500" /> : <Moon className="h-5 w-5 text-gray-700" />}
+      {theme === 'light' ? (
+        <Moon className="h-5 w-5 text-gray-700 dark:text-gray-300" />
+      ) : (
+        <Sun className="h-5 w-5 text-gray-700 dark:text-gray-300" />
+      )}
     </button>
   )
 }

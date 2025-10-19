@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { Car, Search, Star, Users, LogOut } from 'lucide-react'
 import HeroSlideshow from '@/components/HeroSlideshow'
 import AnimatedSection from '@/components/AnimatedSection'
+import ThemeToggle from '@/components/ThemeToggle'
 
 export default function Home() {
   const [user, setUser] = useState<{nombre: string} | null>(null)
@@ -27,9 +28,9 @@ export default function Home() {
     setUser(null)
   }
   return (
-    <div className="min-h-screen bg-gray-50 transition-colors">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
       {/* Header */}
-      <header className="bg-white shadow-sm">
+      <header className="bg-white dark:bg-gray-800 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div className="flex items-center">
@@ -37,7 +38,8 @@ export default function Home() {
               <span className="ml-3 text-xl font-bold text-gray-900">V&R Autos</span>
             </div>
             <nav className="flex items-center space-x-4">
-              <Link href="/vender" className="text-gray-700 hover:text-blue-600 font-medium">Vender</Link>
+              <ThemeToggle />
+              <Link href="/vender" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 font-medium">Vender</Link>
               {user ? (
                 <>
                   <Link href="/dashboard" className="text-gray-700 hover:text-blue-600 font-medium">Panel</Link>
