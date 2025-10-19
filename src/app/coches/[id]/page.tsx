@@ -59,7 +59,7 @@ const defaultCochesData = {
 }
 
 export default function CocheDetallePage({ params }: { params: { id: string } }) {
-  const [coche, setCoche] = useState<{marca: string, modelo: string, año: number, precio: number, kilometraje: number, combustible: string, descripcion: string, imagen: string, vendedor: any} | null>(null)
+  const [coche, setCoche] = useState<{marca: string, modelo: string, año: number, precio: number, kilometraje: number, combustible: string, descripcion: string, imagen: string, vendedor: {nombre: string, telefono: string, email: string}} | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {

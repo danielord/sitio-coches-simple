@@ -8,7 +8,7 @@ import { Car, Plus, LogOut } from 'lucide-react'
 
 export default function DashboardPage() {
   const [user, setUser] = useState<{nombre: string, email: string} | null>(null)
-  const [userCars, setUserCars] = useState<{id: string, marca: string, modelo: string, año: number, precio: number, imagen: string, vendedor?: any}[]>([])
+  const [userCars, setUserCars] = useState<{id: string, marca: string, modelo: string, año: number, precio: number, imagen: string, vendedor?: {nombre: string, email: string}}[]>([])
   const router = useRouter()
 
   useEffect(() => {
@@ -19,7 +19,7 @@ export default function DashboardPage() {
       
       // Cargar coches del usuario
       const allCars = JSON.parse(localStorage.getItem('cars') || '[]')
-      const userPublishedCars = allCars.filter((car: {vendedor?: any}) => 
+      const userPublishedCars = allCars.filter((car: {vendedor?: {nombre: string, email: string}}) => 
         car.vendedor?.email === userData.email || car.vendedor === userData.nombre
       )
       setUserCars(userPublishedCars)
