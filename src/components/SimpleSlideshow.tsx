@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { CarStorage } from '@/lib/storage'
 
 const defaultSlides = [
   {
@@ -42,7 +43,7 @@ export default function SimpleSlideshow() {
 
   const loadSlides = () => {
     try {
-      const slideshowCars = JSON.parse(localStorage.getItem('slideshowCars') || '[]')
+      const slideshowCars = CarStorage.getSlideshowCars()
       if (slideshowCars.length > 0) {
         const dynamicSlides = slideshowCars.map((car: {id: string; title: string; subtitle: string; price: string}, index: number) => ({
           id: car.id,
@@ -64,19 +65,17 @@ export default function SimpleSlideshow() {
   useEffect(() => {
     loadSlides()
     
-    // Escuchar cambios en localStorage
-    const handleStorageChange = () => {
+    // Escuchar cambios en slideshow
+    const handleSlideshowUpdate = () => {
       loadSlides()
     }
     
-    window.addEventListener('storage', handleStorageChange)
-    
-    // También escuchar un evento personalizado para cambios en la misma pestaña
-    window.addEventListener('slideshowUpdate', handleStorageChange)
+    window.addEventListener('storage', handleSlideshowUpdate)
+    window.addEventListener('slideshowUpdated', handleSlideshowUpdate)
     
     return () => {
-      window.removeEventListener('storage', handleStorageChange)
-      window.removeEventListener('slideshowUpdate', handleStorageChange)
+      window.removeEventListener('storage', handleSlideshowUpdate)
+      window.removeEventListener('slideshowUpdated', handleSlideshowUpdate)
     }
   }, [])
 

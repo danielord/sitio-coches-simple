@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowLeft, Search, Filter, Heart, GitCompare, Calculator, MessageCircle, Bell, Star, TrendingUp, LogOut } from 'lucide-react'
+import { CarStorage, SafeStorage } from '@/lib/storage'
 import ThemeToggle from '@/components/ThemeToggle'
 import { useAuth } from '@/hooks/useAuth'
 import { useState, useEffect } from 'react'
@@ -48,16 +49,16 @@ export default function CochesPage() {
   const [favoritos, setFavoritos] = useState<string[]>([])
   const { user, logout } = useAuth()
 
-  useEffect(() => {
+  const loadCars = () => {
     try {
-      const publishedCars = JSON.parse(localStorage.getItem('cars') || '[]')
+      const publishedCars = CarStorage.getCars()
       const allCars = [...defaultCoches, ...publishedCars]
       setCoches(allCars)
       
       // Solo cargar favoritos si hay un usuario logueado
-      const userAuth = localStorage.getItem('userAuth')
+      const userAuth = SafeStorage.get('userAuth')
       if (userAuth) {
-        const savedFavoritos = JSON.parse(localStorage.getItem('favoritos') || '[]')
+        const savedFavoritos = SafeStorage.get('favoritos', [])
         setFavoritos(savedFavoritos.map((f: {id: string}) => f.id))
       } else {
         setFavoritos([])
@@ -67,26 +68,43 @@ export default function CochesPage() {
       setCoches(defaultCoches)
       setFavoritos([])
     }
+  }
+
+  useEffect(() => {
+    loadCars()
+    
+    // Escuchar actualizaciones de coches
+    const handleCarsUpdate = () => {
+      loadCars()
+    }
+    
+    window.addEventListener('carsUpdated', handleCarsUpdate)
+    window.addEventListener('storage', handleCarsUpdate)
+    
+    return () => {
+      window.removeEventListener('carsUpdated', handleCarsUpdate)
+      window.removeEventListener('storage', handleCarsUpdate)
+    }
   }, [])
 
   const toggleFavorito = (coche: {id: string; marca: string; modelo: string; año: number; precio: number; kilometraje: number; combustible: string; imagen: string}) => {
     // Verificar si el usuario está logueado
-    const userAuth = localStorage.getItem('userAuth')
+    const userAuth = SafeStorage.get('userAuth')
     if (!userAuth) {
       alert('Debes iniciar sesión para agregar favoritos')
       return
     }
     
-    const savedFavoritos = JSON.parse(localStorage.getItem('favoritos') || '[]')
+    const savedFavoritos = SafeStorage.get('favoritos', [])
     const isFavorite = savedFavoritos.find((f: {id: string}) => f.id === coche.id)
     
     if (isFavorite) {
       const newFavoritos = savedFavoritos.filter((f: {id: string}) => f.id !== coche.id)
-      localStorage.setItem('favoritos', JSON.stringify(newFavoritos))
+      SafeStorage.set('favoritos', newFavoritos)
       setFavoritos(favoritos.filter(id => id !== coche.id))
     } else {
       const newFavoritos = [...savedFavoritos, coche]
-      localStorage.setItem('favoritos', JSON.stringify(newFavoritos))
+      SafeStorage.set('favoritos', newFavoritos)
       setFavoritos([...favoritos, coche.id])
     }
   }

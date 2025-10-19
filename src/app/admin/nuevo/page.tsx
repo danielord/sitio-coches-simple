@@ -5,6 +5,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { Car, ArrowLeft, Save, Sparkles, Upload } from 'lucide-react'
 import { generateCarImageUrl, generateCarSlideshowImage } from '@/lib/carImages'
+import { CarStorage, SafeStorage } from '@/lib/storage'
 import ThemeToggle from '@/components/ThemeToggle'
 
 export default function NuevoCochePage() {
@@ -66,20 +67,16 @@ export default function NuevoCochePage() {
     return Object.keys(newErrors).length === 0
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log('Form submitted', formData)
     
     if (!validateForm()) {
-      console.log('Validation failed')
       return
     }
     
     try {
-      // Obtener coches existentes
-      const existingCars = JSON.parse(localStorage.getItem('cars') || '[]')
-    
       // Crear nuevo coche
+      const userAuth = SafeStorage.get('userAuth', {})
       const newCar = {
         id: Date.now().toString(),
         ...formData,
@@ -88,38 +85,53 @@ export default function NuevoCochePage() {
         kilometraje: parseInt(formData.kilometraje),
         imagen: formData.imagen || generateCarImageUrl(formData.marca, formData.modelo),
         vendedor: {
-          nombre: JSON.parse(localStorage.getItem('userAuth') || '{}').nombre || 'Vendedor',
+          nombre: userAuth.nombre || 'Vendedor V&R',
           telefono: '+52 55 1234 5678',
-          email: JSON.parse(localStorage.getItem('userAuth') || '{}').email || 'vendedor@vrautos.com'
-        }
+          email: userAuth.email || 'info@vrautos.com'
+        },
+        fechaCreacion: new Date().toISOString()
       }
       
-      console.log('New car created:', newCar)
+      // Guardar coche
+      const carSaved = CarStorage.saveCar(newCar)
+      
+      if (!carSaved) {
+        throw new Error('No se pudo guardar el coche')
+      }
     
       // Si está marcado para slideshow, agregarlo
       if (formData.enSlideshow) {
-        const slideshowCars = JSON.parse(localStorage.getItem('slideshowCars') || '[]')
-        slideshowCars.push({
+        const slideData = {
           id: newCar.id,
           title: `${newCar.marca} ${newCar.modelo}`,
           subtitle: `${newCar.año} - ${newCar.combustible}`,
           price: `$${newCar.precio.toLocaleString()} MXN`,
           image: generateCarSlideshowImage(newCar.marca, newCar.modelo)
-        })
-        localStorage.setItem('slideshowCars', JSON.stringify(slideshowCars))
+        }
         
-        // Disparar evento para actualizar slideshow
-        window.dispatchEvent(new Event('slideshowUpdate'))
+        CarStorage.addToSlideshow(slideData)
       }
-    
-      // Guardar en localStorage
-      existingCars.push(newCar)
-      localStorage.setItem('cars', JSON.stringify(existingCars))
       
-      console.log('Car saved successfully')
-      alert('Coche publicado exitosamente!')
-      // Redirigir a la página del coche recién creado
-      window.location.href = `/coche?id=${newCar.id}`
+      // Limpiar formulario
+      setFormData({
+        marca: '',
+        modelo: '',
+        año: '',
+        precio: '',
+        kilometraje: '',
+        combustible: '',
+        descripcion: '',
+        imagen: '',
+        enSlideshow: false
+      })
+      
+      alert('¡Coche publicado exitosamente!')
+      
+      // Redirigir después de un breve delay
+      setTimeout(() => {
+        window.location.href = `/coche?id=${newCar.id}`
+      }, 500)
+      
     } catch (error) {
       console.error('Error al guardar el coche:', error)
       alert('Error al publicar el coche. Inténtalo de nuevo.')

@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Car, ArrowLeft, Phone, Mail, Calendar, Gauge, Fuel } from 'lucide-react'
+import { CarStorage } from '@/lib/storage'
 import ThemeToggle from '@/components/ThemeToggle'
 
 function CocheContent() {
@@ -91,10 +92,10 @@ const defaultCochesData = {
     // Buscar en coches por defecto primero
     let foundCoche = defaultCochesData[id as keyof typeof defaultCochesData]
     
-    // Si no se encuentra, buscar en localStorage
+    // Si no se encuentra, buscar en coches publicados
     if (!foundCoche) {
       try {
-        const publishedCars = JSON.parse(localStorage.getItem('cars') || '[]')
+        const publishedCars = CarStorage.getCars()
         foundCoche = publishedCars.find((car: {id: string}) => car.id === id)
       } catch (error) {
         console.error('Error loading car data:', error)
