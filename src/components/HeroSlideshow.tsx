@@ -6,21 +6,21 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 const slides = [
   {
     id: 1,
-    image: 'https://picsum.photos/1200/600?random=1',
+    image: '/api/placeholder/1200/600',
     title: 'Toyota Corolla Híbrido',
     subtitle: 'Eficiencia y confiabilidad',
     price: '$370,000 MXN'
   },
   {
     id: 2,
-    image: 'https://picsum.photos/1200/600?random=2',
+    image: '/api/placeholder/1200/600',
     title: 'BMW Serie 3',
     subtitle: 'Lujo y deportividad',
     price: '$640,000 MXN'
   },
   {
     id: 3,
-    image: 'https://picsum.photos/1200/600?random=3',
+    image: '/api/placeholder/1200/600',
     title: 'Audi A4',
     subtitle: 'Tecnología premium',
     price: '$700,000 MXN'
@@ -49,16 +49,11 @@ export default function HeroSlideshow() {
   return (
     <div className="relative h-96 md:h-[500px] overflow-hidden rounded-lg bg-gray-200 dark:bg-gray-700">
       <div className="absolute inset-0 transition-opacity duration-500">
-        <img
-          src={slides[currentSlide].image}
-          alt={slides[currentSlide].title}
-          className="w-full h-full object-cover"
-          onLoad={() => setIsLoaded(true)}
-          onError={(e) => {
-            console.log('Image failed to load:', slides[currentSlide].image)
-            e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI2MDAiIHZpZXdCb3g9IjAgMCAxMjAwIDYwMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjEyMDAiIGhlaWdodD0iNjAwIiBmaWxsPSIjNEY0NjRGIi8+Cjx0ZXh0IHg9IjYwMCIgeT0iMzAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSIyNCI+Q29jaGU8L3RleHQ+Cjwvc3ZnPgo='
-          }}
-        />
+        <div className="w-full h-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center">
+          <div className="text-white text-6xl font-bold opacity-20">
+            {slides[currentSlide].title.split(' ')[0]}
+          </div>
+        </div>
         <div className="absolute inset-0 bg-black bg-opacity-40" />
         <div className="absolute inset-0 flex items-center justify-center text-white text-center">
           <div>

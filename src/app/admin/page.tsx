@@ -1,8 +1,29 @@
+'use client'
+
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Car, ArrowLeft, Plus, BarChart3, Users } from 'lucide-react'
 import ThemeToggle from '@/components/ThemeToggle'
 
 export default function AdminPage() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const router = useRouter()
+
+  useEffect(() => {
+    const auth = localStorage.getItem('adminAuth')
+    if (auth === 'true') {
+      setIsAuthenticated(true)
+    } else {
+      router.push('/admin/login')
+    }
+  }, [])
+
+  if (!isAuthenticated) {
+    return <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+      <div className="text-gray-600 dark:text-gray-400">Redirigiendo...</div>
+    </div>
+  }
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <header className="bg-white dark:bg-gray-800 shadow-sm">
@@ -13,9 +34,18 @@ export default function AdminPage() {
               <span className="ml-2 text-xl font-bold text-gray-900 dark:text-white">V&R Autos - Admin</span>
             </Link>
             <div className="flex items-center space-x-4">
+              <button 
+                onClick={() => {
+                  localStorage.removeItem('adminAuth')
+                  router.push('/')
+                }}
+                className="text-gray-600 dark:text-gray-300 hover:text-blue-600 font-medium"
+              >
+                Cerrar Sesión
+              </button>
               <Link href="/" className="flex items-center text-gray-600 dark:text-gray-300 hover:text-blue-600">
                 <ArrowLeft className="h-4 w-4 mr-2" />
-                Volver al Inicio
+                Inicio
               </Link>
               <ThemeToggle />
             </div>

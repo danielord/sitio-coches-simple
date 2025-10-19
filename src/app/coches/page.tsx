@@ -1,7 +1,10 @@
+'use client'
+
 import Link from 'next/link'
 import Image from 'next/image'
-import { Car, ArrowLeft } from 'lucide-react'
+import { Car, ArrowLeft, Search, Filter } from 'lucide-react'
 import ThemeToggle from '@/components/ThemeToggle'
+import { useState } from 'react'
 
 const coches = [
   {
@@ -37,6 +40,20 @@ const coches = [
 ]
 
 export default function CochesPage() {
+  const [searchTerm, setSearchTerm] = useState('')
+  const [selectedMarca, setSelectedMarca] = useState('')
+  const [maxPrecio, setMaxPrecio] = useState('')
+
+  const filteredCoches = coches.filter(coche => {
+    const matchesSearch = coche.marca.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         coche.modelo.toLowerCase().includes(searchTerm.toLowerCase())
+    const matchesMarca = !selectedMarca || coche.marca === selectedMarca
+    const matchesPrecio = !maxPrecio || coche.precio <= parseInt(maxPrecio)
+    return matchesSearch && matchesMarca && matchesPrecio
+  })
+
+  const marcas = [...new Set(coches.map(c => c.marca))]
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <header className="bg-white dark:bg-gray-800 shadow-sm">
@@ -61,12 +78,60 @@ export default function CochesPage() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Coches Disponibles</h1>
-          <p className="text-gray-600 dark:text-gray-300">{coches.length} coches encontrados</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">Coches Disponibles</h1>
+          
+          {/* Search and Filters */}
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm mb-6">
+            <div className="grid md:grid-cols-4 gap-4">
+              <div className="relative">
+                <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                <input
+                  type="text"
+                  placeholder="Buscar marca o modelo..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+              
+              <select
+                value={selectedMarca}
+                onChange={(e) => setSelectedMarca(e.target.value)}
+                className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="">Todas las marcas</option>
+                {marcas.map(marca => (
+                  <option key={marca} value={marca}>{marca}</option>
+                ))}
+              </select>
+              
+              <input
+                type="number"
+                placeholder="Precio máximo"
+                value={maxPrecio}
+                onChange={(e) => setMaxPrecio(e.target.value)}
+                className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+              />
+              
+              <button
+                onClick={() => {
+                  setSearchTerm('')
+                  setSelectedMarca('')
+                  setMaxPrecio('')
+                }}
+                className="btn-secondary flex items-center justify-center"
+              >
+                <Filter className="h-4 w-4 mr-2" />
+                Limpiar
+              </button>
+            </div>
+          </div>
+          
+          <p className="text-gray-600 dark:text-gray-300">{filteredCoches.length} coches encontrados</p>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {coches.map((coche) => (
+          {filteredCoches.map((coche) => (
             <div key={coche.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
               <img 
                 src={coche.imagen} 
