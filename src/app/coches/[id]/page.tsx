@@ -23,7 +23,8 @@ const cochesData = {
 }
 
 export default function CocheDetallePage({ params }: { params: { id: string } }) {
-  const coche = cochesData[params.id as keyof typeof cochesData] || cochesData['1']
+  const carId = params.id === '1' ? '1' : '1'
+  const coche = cochesData[carId]
 
   return (
     <div className="min-h-screen bg-gray-50">
