@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Car, Search, Star, Users, LogOut } from 'lucide-react'
-import HeroSlideshow from '@/components/HeroSlideshow'
+import SimpleSlideshow from '@/components/SimpleSlideshow'
 import AnimatedSection from '@/components/AnimatedSection'
 import ThemeToggle from '@/components/ThemeToggle'
 
@@ -35,7 +35,7 @@ export default function Home() {
           <div className="flex justify-between items-center py-6">
             <div className="flex items-center">
               <Image src="/logo.jpg" alt="V&R Autos" width={40} height={40} className="rounded-lg" />
-              <span className="ml-3 text-xl font-bold text-gray-900">V&R Autos</span>
+              <span className="ml-3 text-xl font-bold text-gray-900 dark:text-white">V&R Autos</span>
             </div>
             <nav className="flex items-center space-x-4">
               <ThemeToggle />
@@ -43,14 +43,14 @@ export default function Home() {
               {user ? (
                 <>
                   <Link href="/dashboard" className="text-gray-700 hover:text-blue-600 font-medium">Panel</Link>
-                  <span className="text-gray-700">Hola, {user.nombre}</span>
-                  <button onClick={logout} className="text-gray-700 hover:text-blue-600 font-medium flex items-center">
+                  <span className="text-gray-700 dark:text-gray-300">Hola, {user.nombre}</span>
+                  <button onClick={logout} className="text-gray-700 dark:text-gray-300 hover:text-blue-600 font-medium flex items-center">
                     <LogOut className="h-4 w-4 mr-1" />
                     Salir
                   </button>
                 </>
               ) : (
-                <Link href="/login" className="text-gray-700 hover:text-blue-600 font-medium">Iniciar Sesión</Link>
+                <Link href="/login" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 font-medium">Iniciar Sesión</Link>
               )}
               <Link href="/coches" className="btn-primary">Ver Coches</Link>
             </nav>
@@ -62,13 +62,13 @@ export default function Home() {
       <section className="py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatedSection>
-            <HeroSlideshow />
+            <SimpleSlideshow />
           </AnimatedSection>
           <AnimatedSection delay={0.3} className="text-center mt-8">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 text-gray-900">
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 text-gray-900 dark:text-white">
               Encuentra tu Coche Perfecto
             </h1>
-            <p className="text-xl mb-8 max-w-2xl mx-auto text-gray-600">
+            <p className="text-xl mb-8 max-w-2xl mx-auto text-gray-600 dark:text-gray-300">
               La plataforma más completa para comprar y vender coches de segunda mano
             </p>
             <Link href="/coches" className="btn-primary">
@@ -79,11 +79,11 @@ export default function Home() {
       </section>
 
       {/* Features */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-white dark:bg-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatedSection className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">¿Por qué elegir V&R Autos?</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">¿Por qué elegir V&R Autos?</h2>
+            <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
               Ofrecemos la mejor experiencia para comprar y vender coches
             </p>
           </AnimatedSection>
@@ -91,8 +91,8 @@ export default function Home() {
           <div className="grid md:grid-cols-3 gap-8">
             <AnimatedSection delay={0.2} className="text-center">
               <Search className="h-12 w-12 text-blue-600 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2 text-gray-900">Búsqueda Avanzada</h3>
-              <p className="text-gray-600">Encuentra exactamente lo que buscas con nuestros filtros inteligentes</p>
+              <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">Búsqueda Avanzada</h3>
+              <p className="text-gray-600 dark:text-gray-300">Encuentra exactamente lo que buscas con nuestros filtros inteligentes</p>
             </AnimatedSection>
             
             <AnimatedSection delay={0.4} className="text-center">

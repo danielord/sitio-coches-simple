@@ -2,8 +2,9 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { ArrowLeft, Search, Filter, Heart, GitCompare, Calculator, MessageCircle, Bell, Star, TrendingUp } from 'lucide-react'
-
+import { ArrowLeft, Search, Filter, Heart, GitCompare, Calculator, MessageCircle, Bell, Star, TrendingUp, LogOut } from 'lucide-react'
+import ThemeToggle from '@/components/ThemeToggle'
+import { useAuth } from '@/hooks/useAuth'
 import { useState, useEffect } from 'react'
 
 const defaultCoches = [
@@ -45,6 +46,7 @@ export default function CochesPage() {
   const [maxPrecio, setMaxPrecio] = useState('')
   const [coches, setCoches] = useState(defaultCoches)
   const [favoritos, setFavoritos] = useState<string[]>([])
+  const { user, logout } = useAuth()
 
   useEffect(() => {
     try {
@@ -100,17 +102,29 @@ export default function CochesPage() {
   const marcas = [...new Set(coches.map(c => c.marca))]
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow-sm">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <header className="bg-white dark:bg-gray-800 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <Link href="/" className="flex items-center">
               <Image src="/logo.jpg" alt="V&R Autos" width={40} height={40} className="rounded-lg" />
-              <span className="ml-3 text-xl font-bold text-gray-900">V&R Autos</span>
+              <span className="ml-3 text-xl font-bold text-gray-900 dark:text-white">V&R Autos</span>
             </Link>
             <div className="flex items-center space-x-4">
-              <Link href="/vender" className="text-gray-700 hover:text-blue-600 font-medium">Vender</Link>
-              <Link href="/login" className="text-gray-700 hover:text-blue-600 font-medium">Iniciar Sesión</Link>
+              <ThemeToggle />
+              <Link href="/vender" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 font-medium">Vender</Link>
+              {user ? (
+                <>
+                  <Link href="/dashboard" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 font-medium">Panel</Link>
+                  <span className="text-gray-700 dark:text-gray-300">Hola, {user.nombre}</span>
+                  <button onClick={logout} className="text-gray-700 dark:text-gray-300 hover:text-blue-600 font-medium flex items-center">
+                    <LogOut className="h-4 w-4 mr-1" />
+                    Salir
+                  </button>
+                </>
+              ) : (
+                <Link href="/login" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 font-medium">Iniciar Sesión</Link>
+              )}
               <Link href="/" className="flex items-center text-gray-600 hover:text-blue-600">
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Inicio
