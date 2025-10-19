@@ -55,17 +55,25 @@ export default function MensajesPage() {
       localStorage.setItem('mensajes', JSON.stringify(mensajesPredeterminados))
     } else {
       // Generar lista de chats únicos
-      const chatsUnicos = [...new Set(savedMensajes.map((m: any) => m.chatId))]
-      const chatsGenerados = chatsUnicos.map(chatId => {
-        const ultimoMensaje = savedMensajes.filter((m: any) => m.chatId === chatId).pop()
-        return {
-          id: chatId,
-          nombre: `Chat ${chatId}`,
-          ultimoMensaje: ultimoMensaje?.texto || '',
-          fecha: ultimoMensaje?.fecha || new Date().toISOString()
+      const chatsMap = new Map()
+      savedMensajes.forEach((mensaje: {chatId: string; texto: string; fecha: string}) => {
+        if (!chatsMap.has(mensaje.chatId)) {
+          chatsMap.set(mensaje.chatId, {
+            id: mensaje.chatId,
+            nombre: `Chat ${mensaje.chatId}`,
+            ultimoMensaje: mensaje.texto,
+            fecha: mensaje.fecha
+          })
+        } else {
+          // Actualizar con el mensaje más reciente
+          const chat = chatsMap.get(mensaje.chatId)
+          if (new Date(mensaje.fecha) > new Date(chat.fecha)) {
+            chat.ultimoMensaje = mensaje.texto
+            chat.fecha = mensaje.fecha
+          }
         }
       })
-      setChats(chatsGenerados)
+      setChats(Array.from(chatsMap.values()))
     }
   }, [])
 

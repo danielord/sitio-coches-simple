@@ -1,5 +1,5 @@
 // Función para generar URLs de imágenes de coches basadas en marca y modelo
-export function generateCarImageUrl(marca: string, modelo: string, año?: number): string {
+export function generateCarImageUrl(marca: string, modelo: string): string {
   // Normalizar marca y modelo
   const normalizedMarca = marca.toLowerCase().trim()
   const normalizedModelo = modelo.toLowerCase().trim()
