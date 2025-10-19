@@ -17,7 +17,7 @@ export default function LoginPage() {
     if (user) {
       localStorage.setItem('userAuth', JSON.stringify(user))
       alert('Login exitoso')
-      router.push('/admin')
+      router.push('/dashboard')
     } else {
       alert('Credenciales incorrectas')
     }

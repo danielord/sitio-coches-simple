@@ -6,24 +6,24 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 const slides = [
   {
     id: 1,
-    image: '/api/placeholder/1200/600',
     title: 'Toyota Corolla Híbrido',
     subtitle: 'Eficiencia y confiabilidad',
-    price: '$370,000 MXN'
+    price: '$370,000 MXN',
+    color: 'bg-blue-600'
   },
   {
     id: 2,
-    image: '/api/placeholder/1200/600',
     title: 'BMW Serie 3',
     subtitle: 'Lujo y deportividad',
-    price: '$640,000 MXN'
+    price: '$640,000 MXN',
+    color: 'bg-gray-800'
   },
   {
     id: 3,
-    image: '/api/placeholder/1200/600',
     title: 'Audi A4',
     subtitle: 'Tecnología premium',
-    price: '$700,000 MXN'
+    price: '$700,000 MXN',
+    color: 'bg-red-600'
   }
 ]
 
@@ -49,12 +49,7 @@ export default function HeroSlideshow() {
   return (
     <div className="relative h-96 md:h-[500px] overflow-hidden rounded-lg bg-gray-200 dark:bg-gray-700">
       <div className="absolute inset-0 transition-opacity duration-500">
-        <div 
-          className={`w-full h-full flex items-center justify-center ${
-            currentSlide === 0 ? 'bg-blue-600' : 
-            currentSlide === 1 ? 'bg-gray-800' : 'bg-red-600'
-          }`}
-        >
+        <div className={`w-full h-full flex items-center justify-center ${slides[currentSlide].color}`}>
           <div className="text-white text-4xl font-bold">
             🚗 {slides[currentSlide].title.split(' ')[0]}
           </div>
